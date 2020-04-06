@@ -68,7 +68,6 @@ country = c('Ireland',
             'Italy',
             'Sweden',
             'United_Kingdom',
-            'Netherlands', 
             'Germany',
             'France')
 
@@ -79,7 +78,7 @@ d2 = subset(dplus,
 Calculate rolling average over a window (nominally 7 days). One reason for doing this is because there's uncertainty in the dates due to the time it takes for deaths and cases to be registered, etc.
 ```{r}
 dayWindow = 7
-rollingStr = paste0('(',dayWindow,' moving average)')  # String for graph labels
+rollingStr = paste0('(',dayWindow,' day moving average)')  # String for graph labels
 for (i in 1:length(country)) {
   tmp=subset(d2, countriesAndTerritories==country[i])
   tmp$deaths_rolling = rollmean(tmp$deaths, k=dayWindow, align='right', fill=NA)
