@@ -77,7 +77,7 @@ d2 = subset(dplus,
 
 Calculate rolling average over a window (nominally 7 days). One reason for doing this is because there's uncertainty in the dates due to the time it takes for deaths and cases to be registered, etc.
 ```{r}
-dayWindow = 7
+dayWindow = 5
 rollingStr = paste0('(',dayWindow,' day moving average)')  # String for graph labels
 for (i in 1:length(country)) {
   tmp=subset(d2, countriesAndTerritories==country[i])
@@ -105,10 +105,10 @@ ggplot(data=d3,
            colour=countriesAndTerritories)) +
   geom_point() + 
   geom_smooth(method = 'loess', 
-              span=1.5,
+              span=1,
               se=FALSE) +
   scale_y_log10() +
-  scale_color_brewer(palette = 'Set1') +
+  scale_color_brewer(palette = 'Dark2') +
   theme_bw() + 
   labs(x=casesStr,
        y=paste('Number of cases',rollingStr),
@@ -122,10 +122,10 @@ ggplot(data=d3,
            colour=countriesAndTerritories)) +
   geom_point() + 
   geom_smooth(method = 'loess', 
-              span=1.5,
+              span=1,
               se=FALSE) +
   scale_y_log10() +
-  scale_color_brewer(palette = 'Set1') +
+  scale_color_brewer(palette = 'Dark2') +
   theme_bw() + 
   labs(x=casesStr,
        y=paste('Number of deaths',rollingStr),
@@ -139,9 +139,9 @@ ggplot(data=d3,
            colour=countriesAndTerritories)) +
   geom_point() + 
   geom_smooth(method = 'loess', 
-              span=1.5,
+              span=1,
               se=FALSE) +
-  scale_color_brewer(palette = 'Set1') +
+  scale_color_brewer(palette = 'Dark2') +
   theme_bw() + 
   labs(y=paste('Deaths / Cases',rollingStr),
        x=casesStr,
@@ -157,16 +157,44 @@ ggplot(data=d3,
            colour=countriesAndTerritories)) +
   geom_point() + 
   geom_smooth(method = 'loess', 
-              span=1.5,
+              span=1,
               se=FALSE) +
   scale_y_log10() +
   scale_x_log10() +
-  scale_color_brewer(palette = 'Set1') +
+  scale_color_brewer(palette = 'Dark2') +
   theme_bw() + 
   labs(x=paste0('Cumulative number of deaths ',rollingStr),
        y=paste0('Number of deaths ',rollingStr),
        title='Cumulative verus current deaths')
 ```
 
+Fit a linear trend and plot residuals
+
+```{r}
+m = lm(log10(deaths_rolling)~(1+log10(cumdeaths_rolling))*countriesAndTerritories, 
+       data=d3, 
+       na.action=na.exclude)
+```
+
+Plot residuals from these linear trends
+```{r}
+d3$residuals = residuals(m)
+d3$fitted = fitted(m)
+
+ggplot(data=d3,
+       aes(x=fitted, 
+           y=residuals, 
+           colour=countriesAndTerritories)) +
+  geom_abline(intercept=0, slope=0) +
+  geom_point() + 
+  geom_smooth(method = 'loess', 
+              span=1,
+              se=TRUE) +
+  scale_color_brewer(palette = 'Dark2') +
+  theme_bw() + 
+  labs(x=paste0('Fitted for log10(number of deaths)'),
+       y=paste0('Residuals from linear regression'),
+       title='Residuals from cumulative verus current deaths')
+```
 
 
