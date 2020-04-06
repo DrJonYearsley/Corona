@@ -17,16 +17,18 @@ knit: (
 
 ```{r setup, include=FALSE, message=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-setwd("~/git_repos/corona/")
+#setwd("~/git_repos/corona/")
 
 library(readxl)
 library(ggplot2)
 library(zoo)
 ```
 
+A quick look at the European data on Covid-19.
 
 Data downloaded from https://www.ecdc.europa.eu/sites/default/files/documents/COVID-19-geographic-disbtribution-worldwide.xlsx
 
+## Process data
 ```{r}
 d = read_excel("COVID-19-geographic-disbtribution-worldwide.xlsx")
 d$countriesAndTerritories = as.factor(d$countriesAndTerritories)
@@ -43,9 +45,11 @@ d$cumdeaths = ave(d$deaths,
 ```
 
 
-Find day when number of new cases exceeded 3
+Find day when number of new cases exceeded X (where X is typically set at 100-300)
 ```{r}
-dplus = subset(d, cases>100)
+casesThreshold = 100
+casesStr = paste0('Days post ',casesThreshold,' cases') # String for graph labels
+dplus = subset(d, cases>casesThreshold)
 startDate = aggregate(julian~countriesAndTerritories + 
                         geoId + 
                         countryterritoryCode, 
@@ -65,19 +69,22 @@ country = c('Ireland',
             'Sweden',
             'United_Kingdom',
             'Netherlands', 
-            'Germany')
+            'Germany',
+            'France')
 
 d2 = subset(dplus, 
             countriesAndTerritories %in% country)
 ```
 
-Calculate 7 day roling averages
+Calculate rolling average over a window (nominally 7 days). One reason for doing this is because there's uncertainty in the dates due to the time it takes for deaths and cases to be registered, etc.
 ```{r}
+dayWindow = 7
+rollingStr = paste0('(',dayWindow,' moving average)')  # String for graph labels
 for (i in 1:length(country)) {
   tmp=subset(d2, countriesAndTerritories==country[i])
-  tmp$deaths_7day = rollmean(tmp$deaths, k=7, align='right', fill=NA)
-  tmp$cumdeaths_7day = rollmean(tmp$cumdeaths, k=7, align='right', fill=NA)
-  tmp$cases_7day = rollmean(tmp$cases, k=7, align='right', fill=NA)
+  tmp$deaths_rolling = rollmean(tmp$deaths, k=dayWindow, align='right', fill=NA)
+  tmp$cumdeaths_rolling = rollmean(tmp$cumdeaths, k=dayWindow, align='right', fill=NA)
+  tmp$cases_rolling = rollmean(tmp$cases, k=dayWindow, align='right', fill=NA)
   
   if (i==1) {
     d3 = tmp
@@ -88,66 +95,79 @@ for (i in 1:length(country)) {
 ```
 
 
-Plot the epidemic
+# Visualisations
+
+### Temporal trends
+
 ```{r , echo=FALSE}
 ggplot(data=d3,
        aes(x=daysIn, 
-           y=cases_7day, 
+           y=cases_rolling, 
            colour=countriesAndTerritories)) +
   geom_point() + 
   geom_smooth(method = 'loess', 
-              span=1.5) +
+              span=1.5,
+              se=FALSE) +
   scale_y_log10() +
   scale_color_brewer(palette = 'Set1') +
   theme_bw() + 
-  labs(x='Days post cases >100',
-       y='Number of cases (7 day moving average)')
+  labs(x=casesStr,
+       y=paste('Number of cases',rollingStr),
+       title='Trend in new cases')
 ```
 
 ```{r message=FALSE, echo=FALSE}
 ggplot(data=d3,
        aes(x=daysIn, 
-           y=deaths_7day, 
+           y=deaths_rolling, 
            colour=countriesAndTerritories)) +
   geom_point() + 
   geom_smooth(method = 'loess', 
-              span=1.5) +
+              span=1.5,
+              se=FALSE) +
   scale_y_log10() +
   scale_color_brewer(palette = 'Set1') +
   theme_bw() + 
-  labs(x='Days post cases >100',
-       y='Number of deaths (7 day moving average)')
+  labs(x=casesStr,
+       y=paste('Number of deaths',rollingStr),
+       title='Trend in deaths')
 ```
-
 
 ```{r message=FALSE, echo=FALSE}
 ggplot(data=d3,
-       aes(x=cumdeaths_7day, 
-           y=deaths_7day, 
-           colour=countriesAndTerritories)) +
-  geom_point() + 
-  geom_smooth(method = 'loess', 
-              span=1.5) +
-  scale_y_log10() +
-  scale_x_log10() +
-  scale_color_brewer(palette = 'Set1') +
-  theme_bw() + 
-  labs(x='Cumulative number of deaths (7 day moving average)',
-       y='Number of deaths (7 day moving average)')
-```
-
-
-
-```{r message=FALSE, echo=FALSE}
-ggplot(data=d3,
-       aes(y=deaths_7day/cases_7day, 
+       aes(y=deaths_rolling/cases_rolling, 
            x=daysIn, 
            colour=countriesAndTerritories)) +
   geom_point() + 
   geom_smooth(method = 'loess', 
-              span=1.5) +
+              span=1.5,
+              se=FALSE) +
   scale_color_brewer(palette = 'Set1') +
   theme_bw() + 
-  labs(y='Deaths / Cases (7 day average)',
-       x='Days post 100 cases')
+  labs(y=paste('Deaths / Cases',rollingStr),
+       x=casesStr,
+       title='Crude death rate trend')
 ```
+
+### Epidemic indicator
+
+```{r message=FALSE, echo=FALSE}
+ggplot(data=d3,
+       aes(x=cumdeaths_rolling, 
+           y=deaths_rolling, 
+           colour=countriesAndTerritories)) +
+  geom_point() + 
+  geom_smooth(method = 'loess', 
+              span=1.5,
+              se=FALSE) +
+  scale_y_log10() +
+  scale_x_log10() +
+  scale_color_brewer(palette = 'Set1') +
+  theme_bw() + 
+  labs(x=paste0('Cumulative number of deaths ',rollingStr),
+       y=paste0('Number of deaths ',rollingStr),
+       title='Cumulative verus current deaths')
+```
+
+
+
