@@ -1,7 +1,7 @@
 COVID analysis
 ================
 Jon Yearsley
-4/3/2020
+April 07, 2020
 
 A quick look at the European data on Covid-19.
 
@@ -11,6 +11,9 @@ Data downloaded from
 ## Process data
 
 ``` r
+download.file(url='https://www.ecdc.europa.eu/sites/default/files/documents/COVID-19-geographic-disbtribution-worldwide.xlsx',
+              destfile='COVID-19-geographic-disbtribution-worldwide.xlsx')
+
 d = read_excel("COVID-19-geographic-disbtribution-worldwide.xlsx")
 d$countriesAndTerritories = as.factor(d$countriesAndTerritories)
 d$julian = as.numeric(julian(d$dateRep))
@@ -62,7 +65,7 @@ for doing this is because there’s uncertainty in the dates due to the
 time it takes for deaths and cases to be registered, etc.
 
 ``` r
-dayWindow = 5
+dayWindow = 7
 rollingStr = paste0('(',dayWindow,' day moving average)')  # String for graph labels
 for (i in 1:length(country)) {
   tmp=subset(d2, countriesAndTerritories==country[i])
@@ -82,29 +85,29 @@ for (i in 1:length(country)) {
 
 ### Temporal trends
 
-    ## Warning: Removed 24 rows containing non-finite values (stat_smooth).
+    ## Warning: Removed 36 rows containing non-finite values (stat_smooth).
 
-    ## Warning: Removed 24 rows containing missing values (geom_point).
+    ## Warning: Removed 36 rows containing missing values (geom_point).
 
 ![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
-    ## Warning: Removed 24 rows containing non-finite values (stat_smooth).
+    ## Warning: Removed 36 rows containing non-finite values (stat_smooth).
 
-    ## Warning: Removed 24 rows containing missing values (geom_point).
+    ## Warning: Removed 36 rows containing missing values (geom_point).
 
 ![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
-    ## Warning: Removed 24 rows containing non-finite values (stat_smooth).
+    ## Warning: Removed 36 rows containing non-finite values (stat_smooth).
 
-    ## Warning: Removed 24 rows containing missing values (geom_point).
+    ## Warning: Removed 36 rows containing missing values (geom_point).
 
 ![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 ### Epidemic indicator
 
-    ## Warning: Removed 24 rows containing non-finite values (stat_smooth).
+    ## Warning: Removed 36 rows containing non-finite values (stat_smooth).
 
-    ## Warning: Removed 24 rows containing missing values (geom_point).
+    ## Warning: Removed 36 rows containing missing values (geom_point).
 
 ![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
@@ -138,8 +141,8 @@ ggplot(data=d3,
        title='Residuals from cumulative verus current deaths')
 ```
 
-    ## Warning: Removed 24 rows containing non-finite values (stat_smooth).
+    ## Warning: Removed 36 rows containing non-finite values (stat_smooth).
 
-    ## Warning: Removed 24 rows containing missing values (geom_point).
+    ## Warning: Removed 36 rows containing missing values (geom_point).
 
 ![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->

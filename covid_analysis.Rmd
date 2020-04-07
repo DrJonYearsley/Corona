@@ -1,7 +1,7 @@
 ---
 title: "COVID analysis"
 author: "Jon Yearsley"
-date: "4/3/2020"
+date: '`r format(Sys.Date(), "%B %d, %Y")`'
 output: github_document
 knit: (
   function(inputFile, encoding) { 
@@ -30,6 +30,9 @@ Data downloaded from https://www.ecdc.europa.eu/sites/default/files/documents/CO
 
 ## Process data
 ```{r}
+download.file(url='https://www.ecdc.europa.eu/sites/default/files/documents/COVID-19-geographic-disbtribution-worldwide.xlsx',
+              destfile='COVID-19-geographic-disbtribution-worldwide.xlsx')
+
 d = read_excel("COVID-19-geographic-disbtribution-worldwide.xlsx")
 d$countriesAndTerritories = as.factor(d$countriesAndTerritories)
 d$julian = as.numeric(julian(d$dateRep))
@@ -77,7 +80,7 @@ d2 = subset(dplus,
 
 Calculate rolling average over a window (nominally 7 days). One reason for doing this is because there's uncertainty in the dates due to the time it takes for deaths and cases to be registered, etc.
 ```{r}
-dayWindow = 5
+dayWindow = 7
 rollingStr = paste0('(',dayWindow,' day moving average)')  # String for graph labels
 for (i in 1:length(country)) {
   tmp=subset(d2, countriesAndTerritories==country[i])
