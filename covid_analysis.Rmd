@@ -1,7 +1,7 @@
 ---
 title: "COVID analysis"
 author: "Jon Yearsley"
-date: '`r format(Sys.Date(), "%B %d, %Y")`'
+date: '`r format(Sys.Date(), " %d %B, %Y")`'
 output: github_document
 knit: (
   function(inputFile, encoding) { 
@@ -22,6 +22,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(readxl)
 library(ggplot2)
 library(zoo)
+#library(plotly)
 ```
 
 A quick look at the European data on Covid-19.
@@ -68,11 +69,12 @@ dplus$daysIn = dplus$julian - startDate$julian[ind]
 Select data from some countries
 ```{r}
 country = c('Ireland',
-            'Italy',
             'Sweden',
             'United_Kingdom',
-            'Germany',
-            'France')
+            'France',
+            'Denmark',
+            'Austria',
+            'Spain')
 
 d2 = subset(dplus, 
             countriesAndTerritories %in% country)
@@ -99,10 +101,28 @@ for (i in 1:length(country)) {
 
 # Visualisations
 
+### Tables of the latest new cases and deaths per country
+
+```{r}
+d_latest = subset(d3, julian==max(julian))
+
+library(pander)
+pander(d_latest[,c(7, 1,14,5,6,13)],
+       col.names=c('Country',
+                   'Date',
+                   paste('Days post\n',casesThreshold,'cases'),
+                   'New \nCases',
+                   'New \nDeaths',
+                   'Total deaths'),
+       caption='Table 1: The latest numbers from the European Centre for Diesease Prevention and Control (ECDPC). https://www.ecdc.europa.eu/en',
+       keep.line.breaks = TRUE)
+```
+
+
 ### Temporal trends
 
 ```{r , echo=FALSE}
-ggplot(data=d3,
+p1 = ggplot(data=d3,
        aes(x=daysIn, 
            y=cases_rolling, 
            colour=countriesAndTerritories)) +
@@ -116,10 +136,14 @@ ggplot(data=d3,
   labs(x=casesStr,
        y=paste('Number of cases',rollingStr),
        title='Trend in new cases')
+
+#ggplotly(p1)
+
+p1
 ```
 
 ```{r message=FALSE, echo=FALSE}
-ggplot(data=d3,
+p2=ggplot(data=d3,
        aes(x=daysIn, 
            y=deaths_rolling, 
            colour=countriesAndTerritories)) +
@@ -133,10 +157,13 @@ ggplot(data=d3,
   labs(x=casesStr,
        y=paste('Number of deaths',rollingStr),
        title='Trend in deaths')
+
+#ggplotly(p2)
+p2
 ```
 
 ```{r message=FALSE, echo=FALSE}
-ggplot(data=d3,
+p3 = ggplot(data=d3,
        aes(y=deaths_rolling/cases_rolling, 
            x=daysIn, 
            colour=countriesAndTerritories)) +
@@ -149,12 +176,15 @@ ggplot(data=d3,
   labs(y=paste('Deaths / Cases',rollingStr),
        x=casesStr,
        title='Crude death rate trend')
+
+#ggplotly(p3)
+p3
 ```
 
 ### Epidemic indicator
 
 ```{r message=FALSE, echo=FALSE}
-ggplot(data=d3,
+p4 = ggplot(data=d3,
        aes(x=cumdeaths_rolling, 
            y=deaths_rolling, 
            colour=countriesAndTerritories)) +
@@ -169,6 +199,9 @@ ggplot(data=d3,
   labs(x=paste0('Cumulative number of deaths ',rollingStr),
        y=paste0('Number of deaths ',rollingStr),
        title='Cumulative verus current deaths')
+
+#ggplotly(p4)
+p4
 ```
 
 Fit a linear trend and plot residuals
@@ -184,7 +217,7 @@ Plot residuals from these linear trends
 d3$residuals = residuals(m)
 d3$fitted = fitted(m)
 
-ggplot(data=d3,
+p5 = ggplot(data=d3,
        aes(x=fitted, 
            y=residuals, 
            colour=countriesAndTerritories)) +
@@ -192,12 +225,15 @@ ggplot(data=d3,
   geom_point() + 
   geom_smooth(method = 'loess', 
               span=1,
-              se=TRUE) +
+              se=FALSE) +
   scale_color_brewer(palette = 'Dark2') +
   theme_bw() + 
   labs(x=paste0('Fitted for log10(number of deaths)'),
        y=paste0('Residuals from linear regression'),
        title='Residuals from cumulative verus current deaths')
+
+#ggplotly(p5)
+p5
 ```
 
 

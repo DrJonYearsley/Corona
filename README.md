@@ -1,7 +1,7 @@
 COVID analysis
 ================
 Jon Yearsley
-April 07, 2020
+08 April, 2020
 
 A quick look at the European data on Covid-19.
 
@@ -50,11 +50,12 @@ Select data from some countries
 
 ``` r
 country = c('Ireland',
-            'Italy',
             'Sweden',
             'United_Kingdom',
-            'Germany',
-            'France')
+            'France',
+            'Denmark',
+            'Austria',
+            'Spain')
 
 d2 = subset(dplus, 
             countriesAndTerritories %in% country)
@@ -83,33 +84,63 @@ for (i in 1:length(country)) {
 
 # Visualisations
 
+### Tables of the latest new cases and deaths per country
+
+``` r
+d_latest = subset(d3, julian==max(julian))
+
+library(pander)
+pander(d_latest[,c(7, 1,14,5,6,13)],
+       col.names=c('Country',
+                   'Date',
+                   paste('Days post\n',casesThreshold,'cases'),
+                   'New \nCases',
+                   'New \nDeaths',
+                   'Total deaths'),
+       caption='Table 1: The latest numbers from the European Centre for Diesease Prevention and Control (ECDPC). https://www.ecdc.europa.eu/en',
+       keep.line.breaks = TRUE)
+```
+
+|     Country     |    Date    | Days post 100 cases | New Cases | New Deaths | Total deaths |
+| :-------------: | :--------: | :-----------------: | :-------: | :--------: | :----------: |
+|     Ireland     | 2020-04-08 |         19          |    345    |     36     |     210      |
+|     Sweden      | 2020-04-08 |         27          |    487    |    114     |     591      |
+| United\_Kingdom | 2020-04-08 |         26          |   3634    |    786     |     6159     |
+|     France      | 2020-04-08 |         33          |   3777    |    1417    |    10328     |
+|     Denmark     | 2020-04-08 |         28          |    390    |     16     |     203      |
+|     Austria     | 2020-04-08 |         26          |    343    |     23     |     243      |
+|      Spain      | 2020-04-08 |         32          |   5478    |    743     |    13798     |
+
+Table 1: The latest numbers from the European Centre for Diesease
+Prevention and Control (ECDPC). <https://www.ecdc.europa.eu/en>
+
 ### Temporal trends
 
-    ## Warning: Removed 36 rows containing non-finite values (stat_smooth).
+    ## Warning: Removed 42 rows containing non-finite values (stat_smooth).
 
-    ## Warning: Removed 36 rows containing missing values (geom_point).
-
-![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
-
-    ## Warning: Removed 36 rows containing non-finite values (stat_smooth).
-
-    ## Warning: Removed 36 rows containing missing values (geom_point).
+    ## Warning: Removed 42 rows containing missing values (geom_point).
 
 ![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
-    ## Warning: Removed 36 rows containing non-finite values (stat_smooth).
+    ## Warning: Removed 42 rows containing non-finite values (stat_smooth).
 
-    ## Warning: Removed 36 rows containing missing values (geom_point).
+    ## Warning: Removed 42 rows containing missing values (geom_point).
 
 ![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
-### Epidemic indicator
+    ## Warning: Removed 42 rows containing non-finite values (stat_smooth).
 
-    ## Warning: Removed 36 rows containing non-finite values (stat_smooth).
-
-    ## Warning: Removed 36 rows containing missing values (geom_point).
+    ## Warning: Removed 42 rows containing missing values (geom_point).
 
 ![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+
+### Epidemic indicator
+
+    ## Warning: Removed 42 rows containing non-finite values (stat_smooth).
+
+    ## Warning: Removed 42 rows containing missing values (geom_point).
+
+![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 Fit a linear trend and plot residuals
 
@@ -125,7 +156,7 @@ Plot residuals from these linear trends
 d3$residuals = residuals(m)
 d3$fitted = fitted(m)
 
-ggplot(data=d3,
+p5 = ggplot(data=d3,
        aes(x=fitted, 
            y=residuals, 
            colour=countriesAndTerritories)) +
@@ -133,16 +164,19 @@ ggplot(data=d3,
   geom_point() + 
   geom_smooth(method = 'loess', 
               span=1,
-              se=TRUE) +
+              se=FALSE) +
   scale_color_brewer(palette = 'Dark2') +
   theme_bw() + 
   labs(x=paste0('Fitted for log10(number of deaths)'),
        y=paste0('Residuals from linear regression'),
        title='Residuals from cumulative verus current deaths')
+
+#ggplotly(p5)
+p5
 ```
 
-    ## Warning: Removed 36 rows containing non-finite values (stat_smooth).
+    ## Warning: Removed 42 rows containing non-finite values (stat_smooth).
 
-    ## Warning: Removed 36 rows containing missing values (geom_point).
+    ## Warning: Removed 42 rows containing missing values (geom_point).
 
-![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
