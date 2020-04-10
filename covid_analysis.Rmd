@@ -214,7 +214,8 @@ pander(d3[d3$julian%in%ind$julian,
                    'New \nDeaths',
                    'Total deaths'),
        caption='Table 1: The latest numbers from the European Centre for Diesease Prevention and Control (ECDPC). https://www.ecdc.europa.eu/en and Johns Hopkins University Center for Systems Science and Engineering (CSSE), https://github.com/CSSEGISandData/COVID-19',
-       keep.line.breaks = TRUE)
+       keep.line.breaks = TRUE,
+       row.names=FALSE)
 ```
 
 
@@ -227,7 +228,7 @@ p1 = ggplot(data=subset(d3,dataSource=='ECDPC'),
            colour=country)) +
   geom_point() + 
   geom_smooth(method = 'loess', 
-              span=1,
+              span=0.75,
               se=FALSE) +
   scale_y_log10() +
   scale_color_brewer(palette = 'Dark2') +
@@ -248,7 +249,7 @@ p2=ggplot(data=subset(d3,dataSource=='ECDPC'),
            colour=country)) +
   geom_point() + 
   geom_smooth(method = 'loess', 
-              span=1,
+              span=0.75,
               se=FALSE) +
   scale_y_log10() +
   scale_color_brewer(palette = 'Dark2') +
@@ -268,7 +269,7 @@ p3 = ggplot(data=subset(d3,dataSource=='ECDPC'),
            colour=country)) +
   geom_point() + 
   geom_smooth(method = 'loess', 
-              span=1,
+              span=0.75,
               se=FALSE) +
   scale_color_brewer(palette = 'Dark2') +
   theme_bw() + 
@@ -289,7 +290,7 @@ p4 = ggplot(data=subset(d3,dataSource=='ECDPC'),
            colour=country)) +
   geom_point() + 
   geom_smooth(method = 'loess', 
-              span=1,
+              span=0.75,
               se=FALSE) +
   scale_y_log10() +
   scale_x_log10() +

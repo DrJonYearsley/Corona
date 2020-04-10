@@ -189,47 +189,31 @@ pander(d3[d3$julian%in%ind$julian,
                    'New \nDeaths',
                    'Total deaths'),
        caption='Table 1: The latest numbers from the European Centre for Diesease Prevention and Control (ECDPC). https://www.ecdc.europa.eu/en and Johns Hopkins University Center for Systems Science and Engineering (CSSE), https://github.com/CSSEGISandData/COVID-19',
-       keep.line.breaks = TRUE)
+       keep.line.breaks = TRUE,
+       row.names=FALSE)
 ```
 
-|          | Database |     Country     |    Date    | Days post 50 cases | New Cases | New Deaths |
-| :------: | :------: | :-------------: | :--------: | :----------------: | :-------: | :--------: |
-| **2371** |   CSSE   |     Ireland     | 2020-04-08 |       22.96        |    500    |     28     |
-| **236**  |  ECDPC   |     Ireland     | 2020-04-10 |         24         |   1169    |     28     |
-| **474**  |   CSSE   |     Sweden      | 2020-04-08 |       34.96        |    722    |    106     |
-| **239**  |  ECDPC   |     Sweden      | 2020-04-10 |         34         |    722    |    106     |
-| **240**  |  ECDPC   | United\_Kingdom | 2020-04-10 |         32         |   4344    |    881     |
-| **553**  |   CSSE   | United Kingdom  | 2020-04-08 |       31.96        |   4398    |    882     |
-| **1581** |   CSSE   |     France      | 2020-04-08 |       37.96        |   4822    |    1341    |
-| **235**  |  ECDPC   |     France      | 2020-04-10 |         36         |   4286    |    1341    |
-| **316**  |   CSSE   |      Italy      | 2020-04-08 |       45.96        |   4204    |    610     |
-| **237**  |  ECDPC   |      Italy      | 2020-04-10 |         47         |   4204    |    612     |
-| **791**  |   CSSE   |     Austria     | 2020-04-08 |       29.96        |    302    |     22     |
-| **234**  |  ECDPC   |     Austria     | 2020-04-10 |         30         |    279    |     22     |
-| **395**  |   CSSE   |      Spain      | 2020-04-08 |       35.96        |   5002    |    655     |
-| **238**  |  ECDPC   |      Spain      | 2020-04-10 |         35         |   5756    |    683     |
+| Database |     Country     |    Date    | Days post 50 cases | New Cases | New Deaths | Total deaths |
+| :------: | :-------------: | :--------: | :----------------: | :-------: | :--------: | :----------: |
+|   CSSE   |     Ireland     | 2020-04-08 |       22.96        |    500    |     28     |     263      |
+|  ECDPC   |     Ireland     | 2020-04-10 |         24         |   1169    |     28     |     263      |
+|   CSSE   |     Sweden      | 2020-04-08 |       34.96        |    722    |    106     |     793      |
+|  ECDPC   |     Sweden      | 2020-04-10 |         34         |    722    |    106     |     793      |
+|  ECDPC   | United\_Kingdom | 2020-04-10 |         32         |   4344    |    881     |     7978     |
+|   CSSE   | United Kingdom  | 2020-04-08 |       31.96        |   4398    |    882     |     7993     |
+|   CSSE   |     France      | 2020-04-08 |       37.96        |   4822    |    1341    |    12228     |
+|  ECDPC   |     France      | 2020-04-10 |         36         |   4286    |    1341    |    12210     |
+|   CSSE   |      Italy      | 2020-04-08 |       45.96        |   4204    |    610     |    18279     |
+|  ECDPC   |      Italy      | 2020-04-10 |         47         |   4204    |    612     |    18281     |
+|   CSSE   |     Austria     | 2020-04-08 |       29.96        |    302    |     22     |     295      |
+|  ECDPC   |     Austria     | 2020-04-10 |         30         |    279    |     22     |     295      |
+|   CSSE   |      Spain      | 2020-04-08 |       35.96        |   5002    |    655     |    15447     |
+|  ECDPC   |      Spain      | 2020-04-10 |         35         |   5756    |    683     |    15238     |
 
 Table 1: The latest numbers from the European Centre for Diesease
 Prevention and Control (ECDPC). <https://www.ecdc.europa.eu/en> and
 Johns Hopkins University Center for Systems Science and Engineering
-(CSSE), <https://github.com/CSSEGISandData/COVID-19> (continued below)
-
-|          | Total deaths |
-| :------: | :----------: |
-| **2371** |     263      |
-| **236**  |     263      |
-| **474**  |     793      |
-| **239**  |     793      |
-| **240**  |     7978     |
-| **553**  |     7993     |
-| **1581** |    12228     |
-| **235**  |    12210     |
-| **316**  |    18279     |
-| **237**  |    18281     |
-| **791**  |     295      |
-| **234**  |     295      |
-| **395**  |    15447     |
-| **238**  |    15238     |
+(CSSE), <https://github.com/CSSEGISandData/COVID-19>
 
 ### Temporal trends
 
