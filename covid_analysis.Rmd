@@ -40,13 +40,10 @@ Data downloaded from two sources
 
 ```{r}
 countryList = c('Ireland',
-            'Sweden',
             'United_Kingdom',
             'United Kingdom',
             'France',
-            'Italy',
-            'Austria',
-            'Spain')
+            'Austria')
 ```
 
 
@@ -169,7 +166,7 @@ d2$dateRep = as.Date(d2$dateRep)
 
 Calculate rolling average over a window (nominally 7 days). One reason for doing this is because there's uncertainty in the dates due to the time it takes for deaths and cases to be registered, etc.
 ```{r}
-dayWindow = 7
+dayWindow = 5
 rollingStr = paste0('(',dayWindow,' day moving average)')  # String for graph labels
 for (i in countryList) {
   for (s in c('CSSE','ECDPC')) {
@@ -337,4 +334,23 @@ p5 = ggplot(data=d3sub,
 p5
 ```
 
+```{r echo=FALSE}
+p6 = ggplot(data=d3sub,
+       aes(x=daysIn, 
+           y=residuals, 
+           colour=country)) +
+  geom_abline(intercept=0, slope=0) +
+  geom_point() + 
+  geom_smooth(method = 'loess', 
+              span=1,
+              se=FALSE) +
+  scale_color_brewer(palette = 'Dark2') +
+  theme_bw() + 
+  labs(x=casesStr,
+       y=paste0('Residuals from linear regression'),
+       title='Residuals from cumulative verus current deaths')
+
+#ggplotly(p6)
+p6
+```
 

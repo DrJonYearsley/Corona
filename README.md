@@ -1,7 +1,7 @@
 COVID analysis
 ================
 Jon Yearsley
-10 April, 2020
+14 April, 2020
 
 A quick look at the European data on Covid-19.
 
@@ -17,13 +17,10 @@ Data downloaded from two sources
 
 ``` r
 countryList = c('Ireland',
-            'Sweden',
             'United_Kingdom',
             'United Kingdom',
             'France',
-            'Italy',
-            'Austria',
-            'Spain')
+            'Austria')
 ```
 
 ## Download data
@@ -145,7 +142,7 @@ for doing this is because there’s uncertainty in the dates due to the
 time it takes for deaths and cases to be registered, etc.
 
 ``` r
-dayWindow = 7
+dayWindow = 5
 rollingStr = paste0('(',dayWindow,' day moving average)')  # String for graph labels
 for (i in countryList) {
   for (s in c('CSSE','ECDPC')) {
@@ -195,20 +192,14 @@ pander(d3[d3$julian%in%ind$julian,
 
 | Database |     Country     |    Date    | Days post 50 cases | New Cases | New Deaths | Total deaths |
 | :------: | :-------------: | :--------: | :----------------: | :-------: | :--------: | :----------: |
-|   CSSE   |     Ireland     | 2020-04-08 |       22.96        |    500    |     28     |     263      |
-|  ECDPC   |     Ireland     | 2020-04-10 |         24         |   1169    |     28     |     263      |
-|   CSSE   |     Sweden      | 2020-04-08 |       34.96        |    722    |    106     |     793      |
-|  ECDPC   |     Sweden      | 2020-04-10 |         34         |    722    |    106     |     793      |
-|  ECDPC   | United\_Kingdom | 2020-04-10 |         32         |   4344    |    881     |     7978     |
-|   CSSE   | United Kingdom  | 2020-04-08 |       31.96        |   4398    |    882     |     7993     |
-|   CSSE   |     France      | 2020-04-08 |       37.96        |   4822    |    1341    |    12228     |
-|  ECDPC   |     France      | 2020-04-10 |         36         |   4286    |    1341    |    12210     |
-|   CSSE   |      Italy      | 2020-04-08 |       45.96        |   4204    |    610     |    18279     |
-|  ECDPC   |      Italy      | 2020-04-10 |         47         |   4204    |    612     |    18281     |
-|   CSSE   |     Austria     | 2020-04-08 |       29.96        |    302    |     22     |     295      |
-|  ECDPC   |     Austria     | 2020-04-10 |         30         |    279    |     22     |     295      |
-|   CSSE   |      Spain      | 2020-04-08 |       35.96        |   5002    |    655     |    15447     |
-|  ECDPC   |      Spain      | 2020-04-10 |         35         |   5756    |    683     |    15238     |
+|   CSSE   |     Ireland     | 2020-04-12 |       26.96        |    992    |     31     |     365      |
+|  ECDPC   |     Ireland     | 2020-04-14 |         28         |    992    |     31     |     365      |
+|  ECDPC   | United\_Kingdom | 2020-04-14 |         36         |   4342    |    717     |    11329     |
+|   CSSE   | United Kingdom  | 2020-04-12 |       35.96        |   4364    |    718     |    11347     |
+|   CSSE   |     France      | 2020-04-12 |       41.96        |   4205    |    574     |    14986     |
+|  ECDPC   |     France      | 2020-04-14 |         40         |   2673    |    574     |    14967     |
+|   CSSE   |     Austria     | 2020-04-12 |       33.96        |    96     |     18     |     368      |
+|  ECDPC   |     Austria     | 2020-04-14 |         34         |    106    |     18     |     368      |
 
 Table 1: The latest numbers from the European Centre for Diesease
 Prevention and Control (ECDPC). <https://www.ecdc.europa.eu/en> and
@@ -217,29 +208,29 @@ Johns Hopkins University Center for Systems Science and Engineering
 
 ### Temporal trends
 
-    ## Warning: Removed 42 rows containing non-finite values (stat_smooth).
+    ## Warning: Removed 16 rows containing non-finite values (stat_smooth).
 
-    ## Warning: Removed 42 rows containing missing values (geom_point).
+    ## Warning: Removed 16 rows containing missing values (geom_point).
 
 ![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
-    ## Warning: Removed 42 rows containing non-finite values (stat_smooth).
+    ## Warning: Removed 16 rows containing non-finite values (stat_smooth).
 
-    ## Warning: Removed 42 rows containing missing values (geom_point).
+    ## Warning: Removed 16 rows containing missing values (geom_point).
 
 ![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
-    ## Warning: Removed 42 rows containing non-finite values (stat_smooth).
+    ## Warning: Removed 16 rows containing non-finite values (stat_smooth).
 
-    ## Warning: Removed 42 rows containing missing values (geom_point).
+    ## Warning: Removed 16 rows containing missing values (geom_point).
 
 ![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 ### Epidemic indicator
 
-    ## Warning: Removed 42 rows containing non-finite values (stat_smooth).
+    ## Warning: Removed 16 rows containing non-finite values (stat_smooth).
 
-    ## Warning: Removed 42 rows containing missing values (geom_point).
+    ## Warning: Removed 16 rows containing missing values (geom_point).
 
 ![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
@@ -277,8 +268,14 @@ p5 = ggplot(data=d3sub,
 p5
 ```
 
-    ## Warning: Removed 42 rows containing non-finite values (stat_smooth).
+    ## Warning: Removed 16 rows containing non-finite values (stat_smooth).
 
-    ## Warning: Removed 42 rows containing missing values (geom_point).
+    ## Warning: Removed 16 rows containing missing values (geom_point).
 
 ![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+
+    ## Warning: Removed 16 rows containing non-finite values (stat_smooth).
+
+    ## Warning: Removed 16 rows containing missing values (geom_point).
+
+![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
