@@ -1,7 +1,7 @@
 COVID analysis
 ================
 Jon Yearsley
-14 April, 2020
+15 April, 2020
 
 A quick look at the European data on Covid-19.
 
@@ -193,13 +193,16 @@ pander(d3[d3$julian%in%ind$julian,
 | Database |     Country     |    Date    | Days post 50 cases | New Cases | New Deaths | Total deaths |
 | :------: | :-------------: | :--------: | :----------------: | :-------: | :--------: | :----------: |
 |   CSSE   |     Ireland     | 2020-04-12 |       26.96        |    992    |     31     |     365      |
-|  ECDPC   |     Ireland     | 2020-04-14 |         28         |    992    |     31     |     365      |
-|  ECDPC   | United\_Kingdom | 2020-04-14 |         36         |   4342    |    717     |    11329     |
+|   CSSE   |     Ireland     | 2020-04-13 |       27.96        |    832    |     41     |     406      |
+|  ECDPC   |     Ireland     | 2020-04-15 |         29         |    832    |     41     |     406      |
+|  ECDPC   | United\_Kingdom | 2020-04-15 |         37         |   5252    |    778     |    12107     |
 |   CSSE   | United Kingdom  | 2020-04-12 |       35.96        |   4364    |    718     |    11347     |
+|   CSSE   | United Kingdom  | 2020-04-13 |       36.96        |   5275    |    782     |    12129     |
 |   CSSE   |     France      | 2020-04-12 |       41.96        |   4205    |    574     |    14986     |
-|  ECDPC   |     France      | 2020-04-14 |         40         |   2673    |    574     |    14967     |
+|  ECDPC   |     France      | 2020-04-15 |         41         |   5497    |    762     |    15729     |
 |   CSSE   |     Austria     | 2020-04-12 |       33.96        |    96     |     18     |     368      |
-|  ECDPC   |     Austria     | 2020-04-14 |         34         |    106    |     18     |     368      |
+|   CSSE   |     Austria     | 2020-04-13 |       34.96        |    185    |     16     |     384      |
+|  ECDPC   |     Austria     | 2020-04-15 |         35         |    191    |     16     |     384      |
 
 Table 1: The latest numbers from the European Centre for Diesease
 Prevention and Control (ECDPC). <https://www.ecdc.europa.eu/en> and
