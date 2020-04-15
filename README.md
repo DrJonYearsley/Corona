@@ -211,29 +211,13 @@ Johns Hopkins University Center for Systems Science and Engineering
 
 ### Temporal trends
 
-    ## Warning: Removed 16 rows containing non-finite values (stat_smooth).
-
-    ## Warning: Removed 16 rows containing missing values (geom_point).
-
 ![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
-    ## Warning: Removed 16 rows containing non-finite values (stat_smooth).
-
-    ## Warning: Removed 16 rows containing missing values (geom_point).
-
 ![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
-
-    ## Warning: Removed 16 rows containing non-finite values (stat_smooth).
-
-    ## Warning: Removed 16 rows containing missing values (geom_point).
 
 ![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 ### Epidemic indicator
-
-    ## Warning: Removed 16 rows containing non-finite values (stat_smooth).
-
-    ## Warning: Removed 16 rows containing missing values (geom_point).
 
 ![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
@@ -257,10 +241,11 @@ p5 = ggplot(data=d3sub,
            y=residuals, 
            colour=country)) +
   geom_abline(intercept=0, slope=0) +
-  geom_point() + 
+  geom_point(na.rm=T) + 
   geom_smooth(method = 'loess', 
-              span=1,
-              se=FALSE) +
+              span=0.75,
+              se=FALSE,
+              na.rm=T) +
   scale_color_brewer(palette = 'Dark2') +
   theme_bw() + 
   labs(x=paste0('Fitted for log10(number of deaths)'),
@@ -271,14 +256,6 @@ p5 = ggplot(data=d3sub,
 p5
 ```
 
-    ## Warning: Removed 16 rows containing non-finite values (stat_smooth).
-
-    ## Warning: Removed 16 rows containing missing values (geom_point).
-
 ![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
-
-    ## Warning: Removed 16 rows containing non-finite values (stat_smooth).
-
-    ## Warning: Removed 16 rows containing missing values (geom_point).
 
 ![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
