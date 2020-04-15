@@ -223,10 +223,11 @@ p1 = ggplot(data=subset(d3,dataSource=='ECDPC'),
        aes(x=daysIn, 
            y=cases_rolling, 
            colour=country)) +
-  geom_point() + 
+  geom_point(na.rm=T) + 
   geom_smooth(method = 'loess', 
               span=0.75,
-              se=FALSE) +
+              se=FALSE,
+              na.rm=T) +
   scale_y_log10() +
   scale_color_brewer(palette = 'Dark2') +
   theme_bw() + 
@@ -244,10 +245,11 @@ p2=ggplot(data=subset(d3,dataSource=='ECDPC'),
        aes(x=daysIn, 
            y=deaths_rolling, 
            colour=country)) +
-  geom_point() + 
+  geom_point(na.rm=T) + 
   geom_smooth(method = 'loess', 
               span=0.75,
-              se=FALSE) +
+              se=FALSE,
+              na.rm=T) +
   scale_y_log10() +
   scale_color_brewer(palette = 'Dark2') +
   theme_bw() + 
@@ -264,10 +266,11 @@ p3 = ggplot(data=subset(d3,dataSource=='ECDPC'),
        aes(y=deaths_rolling/cases_rolling, 
            x=daysIn, 
            colour=country)) +
-  geom_point() + 
+  geom_point(na.rm=T) + 
   geom_smooth(method = 'loess', 
               span=0.75,
-              se=FALSE) +
+              se=FALSE,
+              na.rm=T) +
   scale_color_brewer(palette = 'Dark2') +
   theme_bw() + 
   labs(y=paste('Deaths / Cases',rollingStr),
@@ -285,10 +288,11 @@ p4 = ggplot(data=subset(d3,dataSource=='ECDPC'),
        aes(x=cumdeaths_rolling, 
            y=deaths_rolling, 
            colour=country)) +
-  geom_point() + 
+  geom_point(na.rm=T) + 
   geom_smooth(method = 'loess', 
               span=0.75,
-              se=FALSE) +
+              se=FALSE,
+              na.rm=T) +
   scale_y_log10() +
   scale_x_log10() +
   scale_color_brewer(palette = 'Dark2') +
@@ -320,10 +324,11 @@ p5 = ggplot(data=d3sub,
            y=residuals, 
            colour=country)) +
   geom_abline(intercept=0, slope=0) +
-  geom_point() + 
+  geom_point(na.rm=T) + 
   geom_smooth(method = 'loess', 
-              span=1,
-              se=FALSE) +
+              span=0.75,
+              se=FALSE,
+              na.rm=T) +
   scale_color_brewer(palette = 'Dark2') +
   theme_bw() + 
   labs(x=paste0('Fitted for log10(number of deaths)'),
@@ -340,10 +345,11 @@ p6 = ggplot(data=d3sub,
            y=residuals, 
            colour=country)) +
   geom_abline(intercept=0, slope=0) +
-  geom_point() + 
+  geom_point(na.rm=T) + 
   geom_smooth(method = 'loess', 
-              span=1,
-              se=FALSE) +
+              span=0.75,
+              se=FALSE,
+              na.rm=T) +
   scale_color_brewer(palette = 'Dark2') +
   theme_bw() + 
   labs(x=casesStr,
