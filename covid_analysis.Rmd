@@ -43,7 +43,8 @@ countryList = c('Ireland',
             'United_Kingdom',
             'United Kingdom',
             'France',
-            'Austria')
+            'Austria',
+            'Switzerland')
 ```
 
 
@@ -315,7 +316,7 @@ m = lm(log10(deaths_rolling)~(1+log10(cumdeaths_rolling))*country,
 ```
 
 Plot residuals from these linear trends
-```{r}
+```{r echo=FALSE}
 d3sub$residuals = residuals(m)
 d3sub$fitted = fitted(m)
 

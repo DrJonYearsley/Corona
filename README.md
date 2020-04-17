@@ -1,7 +1,7 @@
 COVID analysis
 ================
 Jon Yearsley
-15 April, 2020
+17 April, 2020
 
 A quick look at the European data on Covid-19.
 
@@ -20,7 +20,8 @@ countryList = c('Ireland',
             'United_Kingdom',
             'United Kingdom',
             'France',
-            'Austria')
+            'Austria',
+            'Switzerland')
 ```
 
 ## Download data
@@ -192,17 +193,16 @@ pander(d3[d3$julian%in%ind$julian,
 
 | Database |     Country     |    Date    | Days post 50 cases | New Cases | New Deaths | Total deaths |
 | :------: | :-------------: | :--------: | :----------------: | :-------: | :--------: | :----------: |
-|   CSSE   |     Ireland     | 2020-04-12 |       26.96        |    992    |     31     |     365      |
-|   CSSE   |     Ireland     | 2020-04-13 |       27.96        |    832    |     41     |     406      |
-|  ECDPC   |     Ireland     | 2020-04-15 |         29         |    832    |     41     |     406      |
-|  ECDPC   | United\_Kingdom | 2020-04-15 |         37         |   5252    |    778     |    12107     |
-|   CSSE   | United Kingdom  | 2020-04-12 |       35.96        |   4364    |    718     |    11347     |
-|   CSSE   | United Kingdom  | 2020-04-13 |       36.96        |   5275    |    782     |    12129     |
-|   CSSE   |     France      | 2020-04-12 |       41.96        |   4205    |    574     |    14986     |
-|  ECDPC   |     France      | 2020-04-15 |         41         |   5497    |    762     |    15729     |
-|   CSSE   |     Austria     | 2020-04-12 |       33.96        |    96     |     18     |     368      |
-|   CSSE   |     Austria     | 2020-04-13 |       34.96        |    185    |     16     |     384      |
-|  ECDPC   |     Austria     | 2020-04-15 |         35         |    191    |     16     |     384      |
+|   CSSE   |     Ireland     | 2020-04-15 |       29.96        |    724    |     42     |     486      |
+|  ECDPC   |     Ireland     | 2020-04-17 |         31         |    724    |     42     |     486      |
+|  ECDPC   | United\_Kingdom | 2020-04-17 |         39         |   4617    |    861     |    13729     |
+|   CSSE   | United Kingdom  | 2020-04-15 |       38.96        |   4662    |    865     |    13759     |
+|   CSSE   |     France      | 2020-04-15 |       44.96        |   12509   |    753     |    17941     |
+|  ECDPC   |     France      | 2020-04-17 |         43         |   2641    |    753     |    17920     |
+|   CSSE   |     Austria     | 2020-04-15 |       36.96        |    140    |     17     |     410      |
+|  ECDPC   |     Austria     | 2020-04-17 |         37         |    78     |     17     |     410      |
+|   CSSE   |   Switzerland   | 2020-04-15 |       40.96        |    396    |     42     |     1281     |
+|  ECDPC   |   Switzerland   | 2020-04-17 |         41         |    315    |    360     |     1333     |
 
 Table 1: The latest numbers from the European Centre for Diesease
 Prevention and Control (ECDPC). <https://www.ecdc.europa.eu/en> and
@@ -231,31 +231,6 @@ m = lm(log10(deaths_rolling)~(1+log10(cumdeaths_rolling))*country,
 ```
 
 Plot residuals from these linear trends
-
-``` r
-d3sub$residuals = residuals(m)
-d3sub$fitted = fitted(m)
-
-p5 = ggplot(data=d3sub,
-       aes(x=fitted, 
-           y=residuals, 
-           colour=country)) +
-  geom_abline(intercept=0, slope=0) +
-  geom_point(na.rm=T) + 
-  geom_smooth(method = 'loess', 
-              span=0.75,
-              se=FALSE,
-              na.rm=T) +
-  scale_color_brewer(palette = 'Dark2') +
-  theme_bw() + 
-  labs(x=paste0('Fitted for log10(number of deaths)'),
-       y=paste0('Residuals from linear regression'),
-       title='Residuals from cumulative verus current deaths')
-
-#ggplotly(p5)
-p5
-```
-
 ![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 ![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
