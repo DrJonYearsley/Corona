@@ -44,7 +44,8 @@ countryList = c('Ireland',
             'United Kingdom',
             'France',
             'Austria',
-            'Switzerland')
+            'Switzerland',
+            'US')
 ```
 
 
@@ -220,7 +221,10 @@ pander(d3[d3$julian%in%ind$julian,
 ### Temporal trends
 
 ```{r , echo=FALSE}
-p1 = ggplot(data=subset(d3,dataSource=='ECDPC'),
+# Select ECDPC data to plot
+d_plot = subset(d3,dataSource=='ECDPC')
+
+p1 = ggplot(data=d_plot,
        aes(x=daysIn, 
            y=cases_rolling, 
            colour=country)) +
@@ -242,7 +246,7 @@ p1
 ```
 
 ```{r message=FALSE, echo=FALSE}
-p2=ggplot(data=subset(d3,dataSource=='ECDPC'),
+p2=ggplot(data=d_plot,
        aes(x=daysIn, 
            y=deaths_rolling, 
            colour=country)) +
@@ -263,7 +267,7 @@ p2
 ```
 
 ```{r message=FALSE, echo=FALSE}
-p3 = ggplot(data=subset(d3,dataSource=='ECDPC'),
+p3 = ggplot(data=d_plot,
        aes(y=deaths_rolling/cases_rolling, 
            x=daysIn, 
            colour=country)) +
@@ -284,8 +288,16 @@ p3
 
 ### Epidemic indicator
 
+Calculate the deaths over `r dayWindow` days minus the same statistic in the preceeding window.
+
+```{r}
+d_plot$death_change = NA
+d_plot$death_change[-c(1:datWindow)] =   d_plot$deaths[-c(1:datWindow)] - d_plot$deaths[c(1:datWindow)]
+```
+
+
 ```{r message=FALSE, echo=FALSE}
-p4 = ggplot(data=subset(d3,dataSource=='ECDPC'),
+p4 = ggplot(data=d_plot,
        aes(x=cumdeaths_rolling, 
            y=deaths_rolling, 
            colour=country)) +
@@ -309,7 +321,7 @@ p4
 Fit a linear trend and plot residuals
 
 ```{r}
-d3sub = subset(d3,dataSource=='ECDPC')
+d3sub = d_plot
 m = lm(log10(deaths_rolling)~(1+log10(cumdeaths_rolling))*country, 
        data=d3sub, 
        na.action=na.exclude)

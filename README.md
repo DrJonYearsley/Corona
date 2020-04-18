@@ -1,7 +1,7 @@
 COVID analysis
 ================
 Jon Yearsley
-17 April, 2020
+18 April, 2020
 
 A quick look at the European data on Covid-19.
 
@@ -193,16 +193,16 @@ pander(d3[d3$julian%in%ind$julian,
 
 | Database |     Country     |    Date    | Days post 50 cases | New Cases | New Deaths | Total deaths |
 | :------: | :-------------: | :--------: | :----------------: | :-------: | :--------: | :----------: |
-|   CSSE   |     Ireland     | 2020-04-15 |       29.96        |    724    |     42     |     486      |
-|  ECDPC   |     Ireland     | 2020-04-17 |         31         |    724    |     42     |     486      |
-|  ECDPC   | United\_Kingdom | 2020-04-17 |         39         |   4617    |    861     |    13729     |
-|   CSSE   | United Kingdom  | 2020-04-15 |       38.96        |   4662    |    865     |    13759     |
-|   CSSE   |     France      | 2020-04-15 |       44.96        |   12509   |    753     |    17941     |
-|  ECDPC   |     France      | 2020-04-17 |         43         |   2641    |    753     |    17920     |
-|   CSSE   |     Austria     | 2020-04-15 |       36.96        |    140    |     17     |     410      |
-|  ECDPC   |     Austria     | 2020-04-17 |         37         |    78     |     17     |     410      |
-|   CSSE   |   Switzerland   | 2020-04-15 |       40.96        |    396    |     42     |     1281     |
-|  ECDPC   |   Switzerland   | 2020-04-17 |         41         |    315    |    360     |     1333     |
+|   CSSE   |     Ireland     | 2020-04-16 |       30.96        |    709    |     44     |     530      |
+|  ECDPC   |     Ireland     | 2020-04-18 |         32         |    709    |     44     |     530      |
+|  ECDPC   | United\_Kingdom | 2020-04-18 |         40         |   5599    |    847     |    14576     |
+|   CSSE   | United Kingdom  | 2020-04-16 |       39.96        |   5624    |    848     |    14607     |
+|   CSSE   |     France      | 2020-04-16 |       45.96        |   2039    |    762     |    18703     |
+|  ECDPC   |     France      | 2020-04-18 |         44         |    405    |    761     |    18681     |
+|   CSSE   |     Austria     | 2020-04-16 |       37.96        |    119    |     21     |     431      |
+|  ECDPC   |     Austria     | 2020-04-18 |         38         |    155    |     21     |     431      |
+|   CSSE   |   Switzerland   | 2020-04-16 |       41.96        |    346    |     46     |     1327     |
+|  ECDPC   |   Switzerland   | 2020-04-18 |         42         |    346    |     42     |     1058     |
 
 Table 1: The latest numbers from the European Centre for Diesease
 Prevention and Control (ECDPC). <https://www.ecdc.europa.eu/en> and
