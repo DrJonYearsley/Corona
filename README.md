@@ -1,7 +1,7 @@
 COVID analysis
 ================
 Jon Yearsley
-18 April, 2020
+21 April, 2020
 
 A quick look at the European data on Covid-19.
 
@@ -21,7 +21,8 @@ countryList = c('Ireland',
             'United Kingdom',
             'France',
             'Austria',
-            'Switzerland')
+            'Switzerland',
+            'US')
 ```
 
 ## Download data
@@ -151,7 +152,11 @@ for (i in countryList) {
     tmp$deaths_rolling = rollmean(tmp$deaths, k=dayWindow, align='right', fill=NA)
     tmp$cumdeaths_rolling = rollmean(tmp$cumdeaths, k=dayWindow, align='right', fill=NA)
     tmp$cases_rolling = rollmean(tmp$cases, k=dayWindow, align='right', fill=NA)
-    
+
+    # # Calculate average 1 week before
+    # tmp$cases_rolling = rollapply(tmp$cases, k=dayWindow, align='right', fill=NA)
+
+        
     if (i==countryList[1] & s=='CSSE') {
       d3 = tmp
     } else {
@@ -193,16 +198,22 @@ pander(d3[d3$julian%in%ind$julian,
 
 | Database |     Country     |    Date    | Days post 50 cases | New Cases | New Deaths | Total deaths |
 | :------: | :-------------: | :--------: | :----------------: | :-------: | :--------: | :----------: |
-|   CSSE   |     Ireland     | 2020-04-16 |       30.96        |    709    |     44     |     530      |
-|  ECDPC   |     Ireland     | 2020-04-18 |         32         |    709    |     44     |     530      |
-|  ECDPC   | United\_Kingdom | 2020-04-18 |         40         |   5599    |    847     |    14576     |
-|   CSSE   | United Kingdom  | 2020-04-16 |       39.96        |   5624    |    848     |    14607     |
-|   CSSE   |     France      | 2020-04-16 |       45.96        |   2039    |    762     |    18703     |
-|  ECDPC   |     France      | 2020-04-18 |         44         |    405    |    761     |    18681     |
-|   CSSE   |     Austria     | 2020-04-16 |       37.96        |    119    |     21     |     431      |
-|  ECDPC   |     Austria     | 2020-04-18 |         38         |    155    |     21     |     431      |
-|   CSSE   |   Switzerland   | 2020-04-16 |       41.96        |    346    |     46     |     1327     |
-|  ECDPC   |   Switzerland   | 2020-04-18 |         42         |    346    |     42     |     1058     |
+|   CSSE   |     Ireland     | 2020-04-18 |       32.96        |    493    |     39     |     610      |
+|   CSSE   |     Ireland     | 2020-04-19 |       33.96        |    401    |     77     |     687      |
+|  ECDPC   |     Ireland     | 2020-04-21 |         35         |    401    |     77     |     687      |
+|  ECDPC   | United\_Kingdom | 2020-04-21 |         43         |   4676    |    449     |    16509     |
+|   CSSE   | United Kingdom  | 2020-04-18 |       41.96        |   5858    |    597     |    16095     |
+|   CSSE   | United Kingdom  | 2020-04-19 |       42.96        |   4684    |    455     |    16550     |
+|   CSSE   |     France      | 2020-04-18 |       47.96        |   4948    |    399     |    19744     |
+|   CSSE   |     France      | 2020-04-19 |       48.96        |   2383    |    548     |    20292     |
+|  ECDPC   |     France      | 2020-04-21 |         47         |   2051    |    547     |    20265     |
+|   CSSE   |     Austria     | 2020-04-18 |       39.96        |    78     |     9      |     452      |
+|  ECDPC   |     Austria     | 2020-04-21 |         41         |    73     |     18     |     470      |
+|   CSSE   |   Switzerland   | 2020-04-18 |       43.96        |    336    |     25     |     1393     |
+|   CSSE   |   Switzerland   | 2020-04-19 |       44.96        |    204    |     36     |     1429     |
+|  ECDPC   |   Switzerland   | 2020-04-21 |         45         |    168    |     7      |     1141     |
+|   CSSE   |       US        | 2020-04-18 |       44.96        |   26889   |    1997    |    40661     |
+|   CSSE   |       US        | 2020-04-19 |       45.96        |   25240   |    1433    |    42094     |
 
 Table 1: The latest numbers from the European Centre for Diesease
 Prevention and Control (ECDPC). <https://www.ecdc.europa.eu/en> and
@@ -210,6 +221,8 @@ Johns Hopkins University Center for Systems Science and Engineering
 (CSSE), <https://github.com/CSSEGISandData/COVID-19>
 
 ### Temporal trends
+
+    ## `geom_smooth()` using formula 'y ~ x'
 
 ![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
@@ -219,18 +232,33 @@ Johns Hopkins University Center for Systems Science and Engineering
 
 ### Epidemic indicator
 
-![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+Calculate the deaths over 5 days minus the same statistic in the
+preceeding window.
+
+``` r
+d_plot$death_change = NA
+d_plot$death_change[-c(1:dayWindow)] =   d_plot$deaths[-c(1:dayWindow)] 
+```
+
+… to be completed
+
+![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
 Fit a linear trend and plot residuals
 
 ``` r
-d3sub = subset(d3,dataSource=='ECDPC')
+d3sub = d_plot
 m = lm(log10(deaths_rolling)~(1+log10(cumdeaths_rolling))*country, 
        data=d3sub, 
        na.action=na.exclude)
 ```
 
 Plot residuals from these linear trends
-![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+
+    ## `geom_smooth()` using formula 'y ~ x'
 
 ![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+
+    ## `geom_smooth()` using formula 'y ~ x'
+
+![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->

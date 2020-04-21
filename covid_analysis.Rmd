@@ -176,7 +176,11 @@ for (i in countryList) {
     tmp$deaths_rolling = rollmean(tmp$deaths, k=dayWindow, align='right', fill=NA)
     tmp$cumdeaths_rolling = rollmean(tmp$cumdeaths, k=dayWindow, align='right', fill=NA)
     tmp$cases_rolling = rollmean(tmp$cases, k=dayWindow, align='right', fill=NA)
-    
+
+    # # Calculate average 1 week before
+    # tmp$cases_rolling = rollapply(tmp$cases, k=dayWindow, align='right', fill=NA)
+
+        
     if (i==countryList[1] & s=='CSSE') {
       d3 = tmp
     } else {
@@ -221,8 +225,8 @@ pander(d3[d3$julian%in%ind$julian,
 ### Temporal trends
 
 ```{r , echo=FALSE}
-# Select ECDPC data to plot
-d_plot = subset(d3,dataSource=='ECDPC')
+# Select either ECDPC or CSSE data to plot
+d_plot = subset(d3,dataSource=='CSSE')
 
 p1 = ggplot(data=d_plot,
        aes(x=daysIn, 
@@ -292,9 +296,9 @@ Calculate the deaths over `r dayWindow` days minus the same statistic in the pre
 
 ```{r}
 d_plot$death_change = NA
-d_plot$death_change[-c(1:datWindow)] =   d_plot$deaths[-c(1:datWindow)] - d_plot$deaths[c(1:datWindow)]
+d_plot$death_change[-c(1:dayWindow)] =   d_plot$deaths[-c(1:dayWindow)] 
 ```
-
+... to be completed
 
 ```{r message=FALSE, echo=FALSE}
 p4 = ggplot(data=d_plot,
