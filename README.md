@@ -1,7 +1,7 @@
 COVID analysis
 ================
 Jon Yearsley
-21 April, 2020
+23 April, 2020
 
 A quick look at the European data on Covid-19.
 
@@ -139,7 +139,7 @@ d2$dataSource = as.factor(d2$dataSource)
 d2$dateRep = as.Date(d2$dateRep)
 ```
 
-Calculate rolling average over a window (nominally 7 days). One reason
+Calculate rolling average over a window (roughly 5- 7 days). One reason
 for doing this is because there’s uncertainty in the dates due to the
 time it takes for deaths and cases to be registered, etc.
 
@@ -198,22 +198,22 @@ pander(d3[d3$julian%in%ind$julian,
 
 | Database |     Country     |    Date    | Days post 50 cases | New Cases | New Deaths | Total deaths |
 | :------: | :-------------: | :--------: | :----------------: | :-------: | :--------: | :----------: |
-|   CSSE   |     Ireland     | 2020-04-18 |       32.96        |    493    |     39     |     610      |
-|   CSSE   |     Ireland     | 2020-04-19 |       33.96        |    401    |     77     |     687      |
-|  ECDPC   |     Ireland     | 2020-04-21 |         35         |    401    |     77     |     687      |
-|  ECDPC   | United\_Kingdom | 2020-04-21 |         43         |   4676    |    449     |    16509     |
-|   CSSE   | United Kingdom  | 2020-04-18 |       41.96        |   5858    |    597     |    16095     |
-|   CSSE   | United Kingdom  | 2020-04-19 |       42.96        |   4684    |    455     |    16550     |
-|   CSSE   |     France      | 2020-04-18 |       47.96        |   4948    |    399     |    19744     |
-|   CSSE   |     France      | 2020-04-19 |       48.96        |   2383    |    548     |    20292     |
-|  ECDPC   |     France      | 2020-04-21 |         47         |   2051    |    547     |    20265     |
-|   CSSE   |     Austria     | 2020-04-18 |       39.96        |    78     |     9      |     452      |
-|  ECDPC   |     Austria     | 2020-04-21 |         41         |    73     |     18     |     470      |
-|   CSSE   |   Switzerland   | 2020-04-18 |       43.96        |    336    |     25     |     1393     |
-|   CSSE   |   Switzerland   | 2020-04-19 |       44.96        |    204    |     36     |     1429     |
-|  ECDPC   |   Switzerland   | 2020-04-21 |         45         |    168    |     7      |     1141     |
-|   CSSE   |       US        | 2020-04-18 |       44.96        |   26889   |    1997    |    40661     |
-|   CSSE   |       US        | 2020-04-19 |       45.96        |   25240   |    1433    |    42094     |
+|   CSSE   |     Ireland     | 2020-04-20 |       34.96        |    388    |     43     |     730      |
+|   CSSE   |     Ireland     | 2020-04-21 |       35.96        |    631    |     39     |     769      |
+|  ECDPC   |     Ireland     | 2020-04-23 |         37         |    631    |     39     |     769      |
+|  ECDPC   | United\_Kingdom | 2020-04-23 |         45         |   4451    |    763     |    18100     |
+|   CSSE   | United Kingdom  | 2020-04-20 |       43.96        |   4316    |    828     |    17378     |
+|   CSSE   | United Kingdom  | 2020-04-21 |       44.96        |   4466    |    773     |    18151     |
+|   CSSE   |     France      | 2020-04-20 |       49.96        |   2817    |    537     |    20829     |
+|  ECDPC   |     France      | 2020-04-23 |         49         |   1827    |    544     |    21340     |
+|   CSSE   |     Austria     | 2020-04-20 |       41.96        |    78     |     21     |     491      |
+|   CSSE   |     Austria     | 2020-04-21 |       42.96        |    52     |     19     |     510      |
+|  ECDPC   |     Austria     | 2020-04-23 |         43         |    91     |     31     |     494      |
+|   CSSE   |   Switzerland   | 2020-04-20 |       45.96        |    119    |     49     |     1478     |
+|   CSSE   |   Switzerland   | 2020-04-21 |       46.96        |    205    |     31     |     1509     |
+|  ECDPC   |   Switzerland   | 2020-04-23 |         47         |    205    |     30     |     1216     |
+|   CSSE   |       US        | 2020-04-20 |       46.96        |   27539   |    2350    |    44444     |
+|   CSSE   |       US        | 2020-04-21 |       47.96        |   28486   |    2178    |    46622     |
 
 Table 1: The latest numbers from the European Centre for Diesease
 Prevention and Control (ECDPC). <https://www.ecdc.europa.eu/en> and

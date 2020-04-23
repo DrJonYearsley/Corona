@@ -166,7 +166,7 @@ d2$dateRep = as.Date(d2$dateRep)
 
 
 
-Calculate rolling average over a window (nominally 7 days). One reason for doing this is because there's uncertainty in the dates due to the time it takes for deaths and cases to be registered, etc.
+Calculate rolling average over a window (roughly 5- 7 days). One reason for doing this is because there's uncertainty in the dates due to the time it takes for deaths and cases to be registered, etc.
 ```{r}
 dayWindow = 5
 rollingStr = paste0('(',dayWindow,' day moving average)')  # String for graph labels
