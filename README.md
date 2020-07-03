@@ -1,13 +1,13 @@
 COVID analysis
 ================
 Jon Yearsley
-30 April, 2020
+03 July, 2020
 
 A quick look at the European data on Covid-19.
 
 Data downloaded from two sources
 
-  - European Centre for Diesease Prevention and Control (ECDPC).
+  - European Centre for Disease Prevention and Control (ECDPC).
     <https://www.ecdc.europa.eu/en>
 
   - Johns Hopkins University Center for Systems Science and Engineering
@@ -17,8 +17,8 @@ Data downloaded from two sources
 
 ``` r
 countryList = c('Ireland',
-            'United_Kingdom',
             'United Kingdom',
+            'Sweden',
             'France',
             'Austria',
             'Switzerland',
@@ -27,8 +27,7 @@ countryList = c('Ireland',
 
 ## Download data
 
-Data from
-ECDPC
+Data from ECDPC
 
 ``` r
 download.file(url='https://www.ecdc.europa.eu/sites/default/files/documents/COVID-19-geographic-disbtribution-worldwide.xlsx',
@@ -51,8 +50,7 @@ d_ecdpc$cumdeaths = ave(d_ecdpc$deaths,
 d_ecdpc$dataSource='ECDPC'
 ```
 
-Data from
-CSSE
+Data from CSSE
 
 ``` r
 url_csse = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/'
@@ -198,27 +196,34 @@ pander(d3[d3$julian%in%ind$julian,
        row.names=FALSE)
 ```
 
-| Database |     Country     |    Date    | Days post 50 cases | New Cases | New Deaths | Total deaths |
-| :------: | :-------------: | :--------: | :----------------: | :-------: | :--------: | :----------: |
-|   CSSE   |     Ireland     | 2020-04-27 |       41.96        |    229    |     57     |     1159     |
-|   CSSE   |     Ireland     | 2020-04-28 |       42.96        |    376    |     31     |     1190     |
-|  ECDPC   |     Ireland     | 2020-04-29 |         43         |    229    |     57     |     1159     |
-|  ECDPC   |     Ireland     | 2020-04-30 |         44         |    376    |     31     |     1190     |
-|  ECDPC   | United\_Kingdom | 2020-04-29 |         51         |   3996    |    586     |    21678     |
-|  ECDPC   | United\_Kingdom | 2020-04-30 |         52         |   4076    |    4419    |    26097     |
-|   CSSE   | United Kingdom  | 2020-04-27 |       50.96        |   4002    |    911     |    25369     |
-|   CSSE   | United Kingdom  | 2020-04-28 |       51.96        |   4091    |    797     |    26166     |
-|   CSSE   |     France      | 2020-04-27 |       56.96        |   3090    |    367     |    23694     |
-|  ECDPC   |     France      | 2020-04-29 |         55         |   1065    |    367     |    23660     |
-|  ECDPC   |     France      | 2020-04-30 |         56         |   1607    |    427     |    24087     |
-|   CSSE   |     Austria     | 2020-04-27 |       48.96        |    83     |     20     |     569      |
-|  ECDPC   |     Austria     | 2020-04-29 |         49         |    58     |     20     |     569      |
-|   CSSE   |   Switzerland   | 2020-04-27 |       52.96        |    100    |     34     |     1699     |
-|   CSSE   |   Switzerland   | 2020-04-28 |       53.96        |    143    |     17     |     1716     |
-|  ECDPC   |   Switzerland   | 2020-04-29 |         53         |    100    |     27     |     1379     |
-|  ECDPC   |   Switzerland   | 2020-04-30 |         54         |    143    |     28     |     1407     |
-|   CSSE   |       US        | 2020-04-27 |       53.96        |   24385   |    2096    |    58355     |
-|   CSSE   |       US        | 2020-04-28 |       54.96        |   27327   |    2612    |    60967     |
+| Database |    Country     |    Date    | Days post 50 cases | New Cases | New Deaths | Total deaths |
+| :------: | :------------: | :--------: | :----------------: | :-------: | :--------: | :----------: |
+|   CSSE   |    Ireland     | 2020-05-31 |       75.96        |    72     |    \-2     |     1650     |
+|  ECDPC   |    Ireland     | 2020-06-02 |         77         |    72     |     0      |     1650     |
+|   CSSE   | United Kingdom | 2020-05-31 |       84.96        |   1580    |    556     |    39127     |
+|   CSSE   | United Kingdom | 2020-06-30 |        115         |    832    |    176     |    43991     |
+|   CSSE   |     Sweden     | 2020-05-31 |       87.96        |    272    |     8      |     4403     |
+|   CSSE   |     Sweden     | 2020-06-30 |        118         |   1241    |     37     |     5370     |
+|   CSSE   |     Sweden     | 2020-07-01 |        119         |    947    |     41     |     5411     |
+|  ECDPC   |     Sweden     | 2020-06-02 |         87         |    272    |     8      |     4403     |
+|  ECDPC   |     Sweden     | 2020-07-01 |        116         |    784    |     23     |     5333     |
+|  ECDPC   |     Sweden     | 2020-07-02 |        117         |   1241    |     37     |     5370     |
+|   CSSE   |     France     | 2020-05-31 |       90.96        |    339    |     31     |    28836     |
+|   CSSE   |     France     | 2020-06-30 |        121         |    918    |     18     |    29864     |
+|   CSSE   |     France     | 2020-07-01 |        122         |    659    |     14     |    29878     |
+|  ECDPC   |     France     | 2020-06-02 |         89         |    338    |     31     |    28833     |
+|  ECDPC   |     France     | 2020-07-01 |        118         |    541    |     30     |    29843     |
+|  ECDPC   |     France     | 2020-07-02 |        119         |    918    |     18     |    29861     |
+|   CSSE   |    Austria     | 2020-06-30 |        113         |    107    |     0      |     705      |
+|   CSSE   |    Austria     | 2020-07-01 |        114         |    68     |     0      |     705      |
+|  ECDPC   |    Austria     | 2020-07-01 |        112         |    111    |     2      |     705      |
+|   CSSE   |  Switzerland   | 2020-06-30 |        117         |    137    |     2      |     1965     |
+|   CSSE   |  Switzerland   | 2020-07-01 |        118         |    116    |     0      |     1965     |
+|  ECDPC   |  Switzerland   | 2020-07-01 |        116         |    62     |     2      |     1683     |
+|  ECDPC   |  Switzerland   | 2020-07-02 |        117         |    220    |     1      |     1684     |
+|   CSSE   |       US       | 2020-05-31 |       87.96        |   17354   |    772     |    106136    |
+|   CSSE   |       US       | 2020-06-30 |        118         |   51174   |    673     |    128105    |
+|   CSSE   |       US       | 2020-07-01 |        119         |   52291   |    635     |    128740    |
 
 Table 1: The latest numbers from the European Centre for Diesease
 Prevention and Control (ECDPC). <https://www.ecdc.europa.eu/en> and

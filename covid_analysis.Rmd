@@ -30,7 +30,7 @@ A quick look at the European data on Covid-19.
 
 Data downloaded from two sources
 
-+ European Centre for Diesease Prevention and Control (ECDPC). https://www.ecdc.europa.eu/en    
++ European Centre for Disease Prevention and Control (ECDPC). https://www.ecdc.europa.eu/en    
 
 + Johns Hopkins University Center for Systems Science and Engineering (CSSE), https://github.com/CSSEGISandData/COVID-19
 
@@ -40,8 +40,8 @@ Data downloaded from two sources
 
 ```{r}
 countryList = c('Ireland',
-            'United_Kingdom',
             'United Kingdom',
+            'Sweden',
             'France',
             'Austria',
             'Switzerland',
