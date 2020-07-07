@@ -167,9 +167,9 @@ for (i in countryList) {
 
 ```{r echo=FALSE}
 library(pander)
-ind = aggregate(deaths~country, 
+ind = aggregate(deaths_rolling~country, 
                 data=d3, 
-                FUN=max)
+                FUN=function(x) {max(x,na.rm=TRUE)})
 
 peak_deaths = as.data.frame(ind)
 peak_deaths$date = as.Date(NA)
@@ -180,7 +180,8 @@ peak_deaths$weeks = NA
 
 
 for (i in 1:nrow(peak_deaths)) {
-  logInd = d3$country==peak_deaths$country[i] & d3$deaths==peak_deaths$deaths[i]
+  logInd = which(d3$country==peak_deaths$country[i] & d3$deaths_rolling==peak_deaths$deaths_rolling[i])
+  
   peak_deaths$date[i] = d3$dateRep[logInd] 
   peak_deaths$cases[i] = d3$cases[logInd] 
   peak_deaths$daysIn[i] = d3$daysIn[logInd] 
@@ -190,7 +191,7 @@ for (i in 1:nrow(peak_deaths)) {
 
 pander(peak_deaths,
        col.names=c('Country',
-                   'Max \nDeaths',
+                   'Max \nDeaths (5 day mean)',
                    'Date',
                    'New \nCases',
                    paste('Days post\n',casesThreshold,'cases'),

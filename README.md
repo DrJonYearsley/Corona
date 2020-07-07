@@ -39,29 +39,29 @@ time it takes for deaths and cases to be registered, etc.
 
 ### Tables of stats at peak daily deaths
 
-|    Country     | Max Deaths |    Date    | New Cases | Days post 50 cases | Cumulative deaths |
-| :------------: | :--------: | :--------: | :-------: | :----------------: | :---------------: |
-|     France     |    1438    | 2020-04-14 |   3220    |       43.96        |       17169       |
-|    Germany     |    510     | 2020-04-14 |   3394    |       44.96        |       3804        |
-|    Ireland     |    220     | 2020-04-23 |    577    |       37.96        |       1014        |
-|     Italy      |    919     | 2020-03-27 |   5909    |         33         |       9134        |
-|     Spain      |    1179    | 2020-06-18 |    307    |        107         |       28315       |
-|  Switzerland   |     75     | 2020-04-03 |    899    |       28.96        |        666        |
-| United Kingdom |    1172    | 2020-04-20 |   4775    |       48.96        |       20264       |
+|    Country     | Max Deaths (5 day mean) |    Date    | New Cases | Days post 50 cases |
+| :------------: | :---------------------: | :--------: | :-------: | :----------------: |
+|     France     |          1024           | 2020-04-09 |   4372    |       38.96        |
+|    Germany     |           266           | 2020-04-16 |   3699    |       46.96        |
+|    Ireland     |          80.8           | 2020-04-23 |    577    |       37.96        |
+|     Italy      |          842.6          | 2020-03-30 |   4053    |       36.96        |
+|     Spain      |           879           | 2020-04-02 |   7134    |       29.96        |
+|  Switzerland   |          61.4           | 2020-04-03 |    899    |       28.96        |
+| United Kingdom |          1034           | 2020-04-10 |   3613    |       38.96        |
 
 Table 1: The numbers when deaths peaked. Data from Johns Hopkins
 University Center for Systems Science and Engineering (CSSE),
 <https://github.com/CSSEGISandData/COVID-19> (continued below)
 
-| Weeks since 22nd Jan |
-| :------------------: |
-|        11.99         |
-|        11.99         |
-|        13.28         |
-|        9.286         |
-|        21.28         |
-|        10.42         |
-|        12.85         |
+| Cumulative deaths | Weeks since 22nd Jan |
+| :---------------: | :------------------: |
+|       13215       |        11.28         |
+|       4352        |        12.28         |
+|       1014        |        13.28         |
+|       12428       |        9.851         |
+|       11198       |        10.28         |
+|        666        |        10.42         |
+|       11616       |        11.42         |
 
 ### Temporal trends
 
