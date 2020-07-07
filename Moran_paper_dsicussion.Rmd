@@ -1,0 +1,338 @@
+---
+title: "COVID stats for Moran et al (2020) paper"
+author: "Jon Yearsley"
+date: '`r format(Sys.Date(), " %d %B, %Y")`'
+output: github_document
+knit: (
+  function(inputFile, encoding) { 
+
+    pSubTitle <- 'README'
+
+    rmarkdown::render( 
+      input       = inputFile, 
+      encoding    = encoding, 
+      params      = list(sub_title = pSubTitle),      
+      output_file = pSubTitle) })
+---
+
+```{r setup, include=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#setwd("~/git_repos/corona/")
+
+library(readxl)
+library(ggplot2)
+library(zoo)
+library(tidyr)
+library(plotly)
+```
+
+A quick look at the  data on Covid-19.
+
+Data downloaded from 
+
++ Johns Hopkins University Center for Systems Science and Engineering (CSSE), https://github.com/CSSEGISandData/COVID-19
+
+
+
+## Select countries to visualise
+
+```{r}
+countryList = c('Ireland',
+            'United Kingdom',
+            'Italy',
+            'Spain',
+            'France',
+            'Germany',
+            'Switzerland')
+```
+
+
+
+## Download data
+
+
+Data from CSSE
+
+```{r echo=FALSE}
+url_csse = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/'
+cases_filename = 'time_series_covid19_confirmed_global.csv'
+deaths_filename = 'time_series_covid19_deaths_global.csv'
+d_cases = read.csv(url(paste0(url_csse, cases_filename)))
+d_deaths = read.csv(url(paste0(url_csse, deaths_filename)))
+
+tmp = droplevels(subset(d_cases, Country.Region%in%countryList))
+d1 = pivot_longer(data=tmp, 
+                 cols = c(5:ncol(tmp)), 
+                 names_to='dateStr', 
+                 values_to='cumcases')
+
+tmp = droplevels(subset(d_deaths, Country.Region%in%countryList))
+d2 = pivot_longer(data=tmp, 
+                 cols = c(5:ncol(tmp)), 
+                 names_to='dateStr', 
+                 values_to='cumdeaths')
+
+d_csse = aggregate(cbind(cumcases,cumdeaths) ~ dateStr + Country.Region, 
+                    data=merge(d1,d2), 
+                    FUN=sum, na.rm=TRUE)
+
+d_csse$dateRep = as.POSIXct(strptime(d_csse$dateStr, format='X%m.%d.%y'))
+d_csse$julian = as.numeric(julian(d_csse$dateRep, origin=as.Date("2020-01-22")))
+d_csse$cumcases = as.double(d_csse$cumcases)
+d_csse$cumdeaths = as.double(d_csse$cumdeaths)
+
+vars = names(d_csse)
+vars[2] = 'country'
+names(d_csse) = vars
+
+# Order deaths by time
+ind = order(d_csse$julian, d_csse$country) 
+d_csse= d_csse[ind,]
+
+# Calculate number of new cases and number of new deaths
+for (c in countryList) {
+  tmp = subset(d_csse, country==c)
+  if (nrow(tmp)>0) {
+    tmp$cases = c(tmp$cumcases[1], diff(tmp$cumcases))
+    tmp$deaths = c(tmp$cumdeaths[1], diff(tmp$cumdeaths))
+    
+    if (c==countryList[1]) {
+      d_csse_final = tmp
+    } else {
+      d_csse_final = rbind(d_csse_final, tmp)
+    }
+  }
+}
+
+d_csse_final$dataSource='CSSE'
+```
+
+-------------
+
+Find day when number of new cases exceeded X (where X is typically set at 50-300)
+```{r echo=FALSE}
+casesThreshold = 50
+casesStr = paste0('Days post ',casesThreshold,' cases') # String for graph labels
+
+# Function to calculate days into epidemic
+add_daysIn = function(d, threshold) {
+  dplus = subset(d, cases>threshold)
+  startDate = aggregate(julian~country, 
+                        data=dplus, 
+                        FUN=function(x) {min(x)})
+  
+  ind = match(dplus$country,
+              startDate$country)
+  dplus$daysIn = dplus$julian - startDate$julian[ind]
+  return(dplus)
+}
+
+varKeep = c('dataSource','dateRep','country','julian',
+            'cases','deaths','cumdeaths')
+
+
+d2 = as.data.frame(add_daysIn(d_csse_final[,varKeep], casesThreshold))
+
+d2$dataSource = as.factor(d2$dataSource)
+d2$dateRep = as.Date(d2$dateRep)
+```
+
+
+
+Calculate rolling average over a window (roughly 5- 7 days). One reason for doing this is because there's uncertainty in the dates due to the time it takes for deaths and cases to be registered, etc.
+```{r echo=FALSE}
+dayWindow = 5
+rollingStr = paste0('(',dayWindow,' day moving average)')  # String for graph labels
+for (i in countryList) {
+  for (s in c('CSSE')) {
+    tmp=subset(d2, country==i & dataSource==s)
+    tmp$deaths_rolling = rollmean(tmp$deaths, k=dayWindow, align='right', fill=NA)
+    tmp$cumdeaths_rolling = rollmean(tmp$cumdeaths, k=dayWindow, align='right', fill=NA)
+    tmp$cases_rolling = rollmean(tmp$cases, k=dayWindow, align='right', fill=NA)
+
+        
+    if (i==countryList[1] & s=='CSSE') {
+      d3 = tmp
+    } else {
+      d3 = rbind(d3, tmp)
+    }
+  }
+}
+```
+
+
+# Visualisations
+
+### Tables of stats at peak daily deaths
+
+```{r echo=FALSE}
+library(pander)
+ind = aggregate(deaths~country, 
+                data=d3, 
+                FUN=max)
+
+peak_deaths = as.data.frame(ind)
+peak_deaths$date = as.Date(NA)
+peak_deaths$cases = NA
+peak_deaths$daysIn = NA
+peak_deaths$cumdeaths = NA
+peak_deaths$weeks = NA
+
+
+for (i in 1:nrow(peak_deaths)) {
+  logInd = d3$country==peak_deaths$country[i] & d3$deaths==peak_deaths$deaths[i]
+  peak_deaths$date[i] = d3$dateRep[logInd] 
+  peak_deaths$cases[i] = d3$cases[logInd] 
+  peak_deaths$daysIn[i] = d3$daysIn[logInd] 
+  peak_deaths$cumdeaths[i] = d3$cumdeaths[logInd] 
+  peak_deaths$weeks[i] = d3$julian[logInd] /7
+}
+
+pander(peak_deaths,
+       col.names=c('Country',
+                   'Max \nDeaths',
+                   'Date',
+                   'New \nCases',
+                   paste('Days post\n',casesThreshold,'cases'),
+                   'Cumulative deaths',
+                   'Weeks since 22nd Jan'),
+       caption='Table 1: The numbers when deaths peaked. Data from  Johns Hopkins University Center for Systems Science and Engineering (CSSE), https://github.com/CSSEGISandData/COVID-19',
+       keep.line.breaks = TRUE,
+       row.names=FALSE)
+```
+
+
+### Temporal trends
+
+```{r , echo=FALSE}
+# Select either ECDPC or CSSE data to plot
+d_plot = subset(d3,country=='Ireland')
+
+p1 = ggplot(data=d_plot,
+       aes(x=julian/7, 
+           y=cases_rolling)) +
+  geom_point(na.rm=T, colour='darkgreen') + 
+ #xlim(c(0,25)) +
+  theme_bw() + 
+  labs(x='Weeks since 22nd Jan',
+       y=paste('Number of cases',rollingStr),
+       title='Trend in daily case rate (Ireland)')
+
+#ggplotly(p1)
+p1
+```
+
+
+```{r , echo=FALSE}
+# Select either ECDPC or CSSE data to plot
+d_plot = subset(d3,country=='United Kingdom')
+
+p1 = ggplot(data=d_plot,
+       aes(x=julian/7, 
+           y=cases_rolling)) +
+  geom_point(na.rm=T, colour='darkblue') + 
+ # scale_y_log10() +
+ #xlim(c(0,25)) +
+  theme_bw() + 
+  labs(x='Weeks since 22nd Jan',
+       y=paste('Number of cases',rollingStr),
+       title='Trend in daily case rate (UK)')
+
+#ggplotly(p1)
+p1
+```
+```{r , echo=FALSE}
+# Select either ECDPC or CSSE data to plot
+d_plot = subset(d3,country=='Italy')
+
+p1 = ggplot(data=d_plot,
+       aes(x=julian/7, 
+           y=cases_rolling)) +
+  geom_point(na.rm=T, colour='magenta') + 
+ # scale_y_log10() +
+# xlim(c(0,25)) +
+  theme_bw() + 
+  labs(x='Weeks since 22nd Jan',
+       y=paste('Number of cases',rollingStr),
+       title='Trend in daily case rate (Italy)')
+
+#ggplotly(p1)
+p1
+```
+
+
+```{r , echo=FALSE}
+# Select either ECDPC or CSSE data to plot
+d_plot = subset(d3,country=='Spain')
+
+p1 = ggplot(data=d_plot,
+       aes(x=julian/7, 
+           y=cases_rolling)) +
+  geom_point(na.rm=T, colour='darkorange') + 
+ # scale_y_log10() +
+# xlim(c(0,25)) +
+  theme_bw() + 
+  labs(x='Weeks since 22nd Jan',
+       y=paste('Number of cases',rollingStr),
+       title='Trend in daily case rate (Spain)')
+
+#ggplotly(p1)
+p1
+```
+
+```{r , echo=FALSE}
+# Select either ECDPC or CSSE data to plot
+d_plot = subset(d3,country=='France')
+
+p1 = ggplot(data=d_plot,
+       aes(x=julian/7, 
+           y=cases_rolling)) +
+  geom_point(na.rm=T, colour='gold') + 
+ # scale_y_log10() +
+# xlim(c(0,25)) +
+  theme_bw() + 
+  labs(x='Weeks since 22nd Jan',
+       y=paste('Number of cases',rollingStr),
+       title='Trend in daily case rate (France)')
+
+#ggplotly(p1)
+p1
+```
+
+```{r , echo=FALSE}
+# Select either ECDPC or CSSE data to plot
+d_plot = subset(d3,country=='Germany')
+
+p1 = ggplot(data=d_plot,
+       aes(x=julian/7, 
+           y=cases_rolling)) +
+  geom_point(na.rm=T, colour='darkred')+
+ # scale_y_log10() +
+# xlim(c(0,25)) +
+  theme_bw() + 
+  labs(x='Weeks since 22nd Jan',
+       y=paste('Number of cases',rollingStr),
+       title='Trend in daily case rate (Germany)')
+
+#ggplotly(p1)
+p1
+```
+
+```{r , echo=FALSE}
+# Select either ECDPC or CSSE data to plot
+d_plot = subset(d3,country=='Switzerland')
+
+p1 = ggplot(data=d_plot,
+       aes(x=julian/7, 
+           y=cases_rolling)) +
+  geom_point(na.rm=T, colour='black') + 
+ # scale_y_log10() +
+# xlim(c(0,25)) +
+  theme_bw() + 
+  labs(x='Weeks since 22nd Jan',
+       y=paste('Number of cases',rollingStr),
+       title='Trend in daily case rate (Switzerland)')
+
+#ggplotly(p1)
+p1
+```

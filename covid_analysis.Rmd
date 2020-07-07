@@ -61,7 +61,7 @@ download.file(url='https://www.ecdc.europa.eu/sites/default/files/documents/COVI
 d_ecdpc= read_excel("COVID-19-geographic-disbtribution-worldwide.xlsx")
 d_ecdpc = subset(d_ecdpc, countriesAndTerritories%in%countryList)
 d_ecdpc$country = as.factor(d_ecdpc$countriesAndTerritories)
-d_ecdpc$julian = as.numeric(julian(d_ecdpc$dateRep))
+d_ecdpc$julian = as.numeric(julian(as.Date(d_ecdpc$dateRep)))
 d_ecdpc$ID = c(1:nrow(d_ecdpc))
 
 # Order deaths by time
@@ -73,7 +73,6 @@ d_ecdpc$cumdeaths = ave(d_ecdpc$deaths,
                         FUN=function(x){cumsum(x)})
 
 d_ecdpc$dataSource='ECDPC'
-
 ```
 
 
