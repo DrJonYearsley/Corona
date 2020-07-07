@@ -163,7 +163,7 @@ for (i in countryList) {
 
 # Visualisations
 
-### Tables of stats at peak daily deaths
+### Tables of stats at peak daily deaths (5 day mean)
 
 ```{r echo=FALSE}
 library(pander)
@@ -174,7 +174,6 @@ ind = aggregate(deaths_rolling~country,
 peak_deaths = as.data.frame(ind)
 peak_deaths$date = as.Date(NA)
 peak_deaths$cases = NA
-peak_deaths$daysIn = NA
 peak_deaths$cumdeaths = NA
 peak_deaths$weeks = NA
 
@@ -184,18 +183,16 @@ for (i in 1:nrow(peak_deaths)) {
   
   peak_deaths$date[i] = d3$dateRep[logInd] 
   peak_deaths$cases[i] = d3$cases[logInd] 
-  peak_deaths$daysIn[i] = d3$daysIn[logInd] 
   peak_deaths$cumdeaths[i] = d3$cumdeaths[logInd] 
   peak_deaths$weeks[i] = d3$julian[logInd] /7
 }
 
 pander(peak_deaths,
        col.names=c('Country',
-                   'Max \nDeaths (5 day mean)',
+                   'Max \nDeaths',
                    'Date',
                    'New \nCases',
-                   paste('Days post\n',casesThreshold,'cases'),
-                   'Cumulative deaths',
+                   'Cum deaths',
                    'Weeks since 22nd Jan'),
        caption='Table 1: The numbers when deaths peaked. Data from  Johns Hopkins University Center for Systems Science and Engineering (CSSE), https://github.com/CSSEGISandData/COVID-19',
        keep.line.breaks = TRUE,
