@@ -200,7 +200,7 @@ pander(peak_deaths,
 ```
 
 
-### Temporal trends
+### Temporal trends in daily cases
 
 ```{r , echo=FALSE}
 # Select either ECDPC or CSSE data to plot
@@ -330,6 +330,144 @@ p1 = ggplot(data=d_plot,
   labs(x='Weeks since 22nd Jan',
        y=paste('Number of cases',rollingStr),
        title='Trend in daily case rate (Switzerland)')
+
+#ggplotly(p1)
+p1
+```
+
+### Temporal trends in cumulative deaths
+
+
+```{r , echo=FALSE}
+# Select either ECDPC or CSSE data to plot
+d_plot = subset(d3,country=='Ireland')
+
+p1 = ggplot(data=d_plot,
+       aes(x=julian/7, 
+           y=cumdeaths)) +
+  geom_point(na.rm=T, colour='darkgreen') + 
+ #xlim(c(0,25)) +
+  theme_bw() + 
+  labs(x='Weeks since 22nd Jan',
+       y='Number of cumulative deaths',
+       title='Trend in cumulative deaths (Ireland)')
+
+#ggplotly(p1)
+p1
+```
+
+
+```{r , echo=FALSE}
+# Select either ECDPC or CSSE data to plot
+d_plot = subset(d3,country=='United Kingdom')
+
+p1 = ggplot(data=d_plot,
+       aes(x=julian/7, 
+           y=cumdeaths)) +
+  geom_point(na.rm=T, colour='darkblue') + 
+ # scale_y_log10() +
+ #xlim(c(0,25)) +
+  theme_bw() + 
+  labs(x='Weeks since 22nd Jan',
+       y='Number of cumulative deaths',
+       title='Trend in cumulative deaths (UK)')
+
+#ggplotly(p1)
+p1
+```
+
+
+```{r , echo=FALSE}
+# Select either ECDPC or CSSE data to plot
+d_plot = subset(d3,country=='Italy')
+
+p1 = ggplot(data=d_plot,
+       aes(x=julian/7, 
+           y=cumdeaths)) +
+  geom_point(na.rm=T, colour='magenta') + 
+ # scale_y_log10() +
+# xlim(c(0,25)) +
+  theme_bw() + 
+  labs(x='Weeks since 22nd Jan',
+       y='Number of cumulative deaths',
+       title='Trend in cumulative deaths (Italy)')
+
+#ggplotly(p1)
+p1
+```
+
+
+```{r , echo=FALSE}
+# Select either ECDPC or CSSE data to plot
+d_plot = subset(d3,country=='Spain')
+
+p1 = ggplot(data=d_plot,
+       aes(x=julian/7, 
+           y=cumdeaths)) +
+  geom_point(na.rm=T, colour='darkorange') + 
+ # scale_y_log10() +
+# xlim(c(0,25)) +
+  theme_bw() + 
+  labs(x='Weeks since 22nd Jan',
+       y='Number of cumulative deaths',
+       title='Trend in cumulative deaths (Spain)')
+
+#ggplotly(p1)
+p1
+```
+
+```{r , echo=FALSE}
+# Select either ECDPC or CSSE data to plot
+d_plot = subset(d3,country=='France')
+
+p1 = ggplot(data=d_plot,
+       aes(x=julian/7, 
+           y=cumdeaths)) +
+  geom_point(na.rm=T, colour='gold') + 
+ # scale_y_log10() +
+# xlim(c(0,25)) +
+  theme_bw() + 
+  labs(x='Weeks since 22nd Jan',
+       y='Number of cumulative deaths',
+       title='Trend in cumulative deaths (France)')
+
+#ggplotly(p1)
+p1
+```
+
+```{r , echo=FALSE}
+# Select either ECDPC or CSSE data to plot
+d_plot = subset(d3,country=='Germany')
+
+p1 = ggplot(data=d_plot,
+       aes(x=julian/7, 
+           y=cumdeaths)) +
+  geom_point(na.rm=T, colour='darkred')+
+ # scale_y_log10() +
+# xlim(c(0,25)) +
+  theme_bw() + 
+  labs(x='Weeks since 22nd Jan',
+       y='Number of cumulative deaths',
+       title='Trend in cumulative deaths (Germany)')
+
+#ggplotly(p1)
+p1
+```
+
+```{r , echo=FALSE}
+# Select either ECDPC or CSSE data to plot
+d_plot = subset(d3,country=='Switzerland')
+
+p1 = ggplot(data=d_plot,
+       aes(x=julian/7, 
+           y=cumdeaths)) +
+  geom_point(na.rm=T, colour='black') + 
+ # scale_y_log10() +
+# xlim(c(0,25)) +
+  theme_bw() + 
+  labs(x='Weeks since 22nd Jan',
+       y='Number of cumulative deaths',
+       title='Trend in cumulative deaths (Switzerland)')
 
 #ggplotly(p1)
 p1

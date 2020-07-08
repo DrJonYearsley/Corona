@@ -1,7 +1,7 @@
 COVID stats for Moran et al (2020) paper
 ================
 Jon Yearsley
-07 July, 2020
+08 July, 2020
 
 A quick look at the data on Covid-19.
 
@@ -53,7 +53,7 @@ Table 1: The numbers when deaths peaked. Data from Johns Hopkins
 University Center for Systems Science and Engineering (CSSE),
 <https://github.com/CSSEGISandData/COVID-19>
 
-### Temporal trends
+### Temporal trends in daily cases
 
 ![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
@@ -67,3 +67,19 @@ University Center for Systems Science and Engineering (CSSE),
 ![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
 ![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+
+### Temporal trends in cumulative deaths
+
+![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+
+![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+
+![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+
+![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+
+![](README_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+
+![](README_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+
+![](README_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
