@@ -43,9 +43,7 @@ countryList = c('Ireland',
             'United Kingdom',
             'Sweden',
             'France',
-            'Austria',
-            'Switzerland',
-            'US')
+            'Switzerland')
 ```
 
 
@@ -233,7 +231,8 @@ p1 = ggplot(data=d_plot,
            colour=country)) +
   geom_point(na.rm=T) + 
   geom_smooth(method = 'loess', 
-              span=0.75,
+              formula=y~x,
+              span=0.25,
               se=FALSE,
               na.rm=T) +
   scale_y_log10() +
@@ -254,8 +253,9 @@ p2=ggplot(data=d_plot,
            y=deaths_rolling, 
            colour=country)) +
   geom_point(na.rm=T) + 
-  geom_smooth(method = 'loess', 
-              span=0.75,
+  geom_smooth(method = 'loess',
+              formula=y~x,
+              span=0.25,
               se=FALSE,
               na.rm=T) +
   scale_y_log10() +
@@ -306,7 +306,7 @@ p4 = ggplot(data=d_plot,
            colour=country)) +
   geom_point(na.rm=T) + 
   geom_smooth(method = 'loess', 
-              span=0.75,
+              span=0.25,
               se=FALSE,
               na.rm=T) +
   scale_y_log10() +
@@ -320,59 +320,3 @@ p4 = ggplot(data=d_plot,
 #ggplotly(p4)
 p4
 ```
-
-Fit a linear trend and plot residuals
-
-```{r}
-d3sub = d_plot
-m = lm(log10(deaths_rolling)~(1+log10(cumdeaths_rolling))*country, 
-       data=d3sub, 
-       na.action=na.exclude)
-```
-
-Plot residuals from these linear trends
-```{r echo=FALSE}
-d3sub$residuals = residuals(m)
-d3sub$fitted = fitted(m)
-
-p5 = ggplot(data=d3sub,
-       aes(x=fitted, 
-           y=residuals, 
-           colour=country)) +
-  geom_abline(intercept=0, slope=0) +
-  geom_point(na.rm=T) + 
-  geom_smooth(method = 'loess', 
-              span=0.75,
-              se=FALSE,
-              na.rm=T) +
-  scale_color_brewer(palette = 'Dark2') +
-  theme_bw() + 
-  labs(x=paste0('Fitted for log10(number of deaths)'),
-       y=paste0('Residuals from linear regression'),
-       title='Residuals from cumulative verus current deaths')
-
-#ggplotly(p5)
-p5
-```
-
-```{r echo=FALSE}
-p6 = ggplot(data=d3sub,
-       aes(x=daysIn, 
-           y=residuals, 
-           colour=country)) +
-  geom_abline(intercept=0, slope=0) +
-  geom_point(na.rm=T) + 
-  geom_smooth(method = 'loess', 
-              span=0.75,
-              se=FALSE,
-              na.rm=T) +
-  scale_color_brewer(palette = 'Dark2') +
-  theme_bw() + 
-  labs(x=casesStr,
-       y=paste0('Residuals from linear regression'),
-       title='Residuals from cumulative verus current deaths')
-
-#ggplotly(p6)
-p6
-```
-
