@@ -20,7 +20,7 @@ countryList = c('Ireland',
             'United Kingdom',
             'Sweden',
             'France',
-            'Switzerland')
+            'Italy')
 ```
 
 ## Download data
@@ -197,15 +197,12 @@ pander(d3[d3$julian%in%ind$julian,
 | Database |    Country     |    Date    | Days post 50 cases | New Cases | New Deaths | Total deaths |
 |:--------:|:--------------:|:----------:|:------------------:|:---------:|:----------:|:------------:|
 |   CSSE   |    Ireland     | 2020-12-11 |        269         |    304    |     3      |     2120     |
-|   CSSE   |    Ireland     | 2020-12-12 |        270         |    249    |     3      |     2123     |
 |   CSSE   |    Ireland     | 2020-12-14 |        272         |    264    |     2      |     2126     |
 |   CSSE   |    Ireland     | 2020-12-18 |        276         |    576    |     6      |     2149     |
 |   CSSE   |    Ireland     | 2020-12-21 |        279         |    725    |     0      |     2158     |
 |  ECDPC   |    Ireland     | 2020-12-11 |        269         |    303    |     15     |     2117     |
-|  ECDPC   |    Ireland     | 2020-12-12 |        270         |    304    |     3      |     2120     |
 |  ECDPC   |    Ireland     | 2020-12-14 |        272         |    429    |     1      |     2124     |
 |   CSSE   | United Kingdom | 2020-12-11 |        283         |   21784   |    424     |    63603     |
-|   CSSE   | United Kingdom | 2020-12-12 |        284         |   21554   |    520     |    64123     |
 |   CSSE   | United Kingdom | 2020-12-14 |        286         |   20377   |    233     |    64500     |
 |   CSSE   | United Kingdom | 2020-12-18 |        290         |   28560   |    490     |    66640     |
 |   CSSE   | United Kingdom | 2020-12-21 |        293         |   33517   |    215     |    67718     |
@@ -217,14 +214,13 @@ pander(d3[d3$julian%in%ind$julian,
 |   CSSE   |     France     | 2020-12-18 |        291         |   16005   |    612     |    60345     |
 |   CSSE   |     France     | 2020-12-21 |        294         |   5960    |    354     |    61019     |
 |  ECDPC   |     France     | 2020-12-11 |        281         |   13750   |    292     |    56940     |
-|  ECDPC   |     France     | 2020-12-12 |        282         |   13406   |    627     |    57567     |
 |  ECDPC   |     France     | 2020-12-14 |        284         |   11533   |    150     |    57911     |
-|   CSSE   |  Switzerland   | 2020-12-11 |        280         |   5136    |    104     |     5928     |
-|   CSSE   |  Switzerland   | 2020-12-14 |        283         |   10726   |    169     |     6154     |
-|   CSSE   |  Switzerland   | 2020-12-18 |        287         |   4478    |     74     |     6561     |
-|   CSSE   |  Switzerland   | 2020-12-21 |        290         |   10002   |    159     |     6781     |
-|  ECDPC   |  Switzerland   | 2020-12-11 |        279         |   5038    |     87     |     5273     |
-|  ECDPC   |  Switzerland   | 2020-12-12 |        280         |   5111    |    105     |     5378     |
+|   CSSE   |     Italy      | 2020-12-11 |        292         |   18726   |    761     |    63387     |
+|   CSSE   |     Italy      | 2020-12-14 |        295         |   12025   |    491     |    65011     |
+|   CSSE   |     Italy      | 2020-12-18 |        299         |   15401   |    674     |    67894     |
+|   CSSE   |     Italy      | 2020-12-21 |        302         |   10869   |    415     |    69214     |
+|  ECDPC   |     Italy      | 2020-12-11 |        292         |   16998   |    887     |    62626     |
+|  ECDPC   |     Italy      | 2020-12-14 |        295         |   17937   |    484     |    64520     |
 
 Table 1: The latest numbers from the European Centre for Diesease
 Prevention and Control (ECDPC). <https://www.ecdc.europa.eu/en> and
